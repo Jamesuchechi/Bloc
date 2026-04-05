@@ -17,7 +17,7 @@ const Landing: React.FC = () => {
 
   useEffect(() => {
     if (!isAuthLoading && user) {
-      navigate('/focus', { replace: true });
+      navigate('/dashboard', { replace: true });
     }
   }, [user, isAuthLoading, navigate]);
 

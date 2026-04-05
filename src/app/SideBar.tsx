@@ -8,7 +8,8 @@ import {
   ChevronRight,
   LogOut,
   Bell,
-  Layers
+  Layers,
+  Ship
 } from "lucide-react";
 import { cn } from "../lib/utils";
 import { useAppStore } from "../store/appStore";
@@ -61,8 +62,9 @@ export function SideBar() {
   } = useAppStore();
 
   const navItems: { id: typeof activeModule; label: string; icon: React.ElementType }[] = [
-    { id: "focus", label: "Focus Timer", icon: Timer },
     { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
+    { id: "focus", label: "Focus Timer", icon: Timer },
+    { id: "log", label: "Ship Log", icon: Ship },
     { id: "modules", label: "Modules", icon: Layers },
     { id: "settings", label: "Settings", icon: Settings },
   ];

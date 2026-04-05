@@ -25,7 +25,7 @@ export default function SignUp() {
       
       // If session exists, they are logged in (verification could be disabled)
       if (data?.session) {
-        navigate("/focus");
+        navigate("/dashboard");
       } else {
         // Otherwise, move to verification instruction page
         navigate("/verify-email");

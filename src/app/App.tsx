@@ -14,8 +14,10 @@ import PublicSummaryPage from "../pages/PublicSummaryPage";
 import { PlaceholderPage } from "../pages/PlaceholderPage";
 import { Timer, Layers, Settings, FileText, Users, ClipboardList } from "lucide-react";
 import { Toaster } from "react-hot-toast";
+import { useAuth } from "../hooks/useAuth";
 
 export default function App() {
+  useAuth();
   return (
     <>
       <Toaster 

@@ -16,10 +16,12 @@ import { Timer, Layers, Settings, FileText, Users, ClipboardList } from "lucide-
 import { Toaster } from "react-hot-toast";
 import { useAuth } from "../hooks/useAuth";
 
+import { AuthInitializer } from "../components/auth/AuthInitializer";
+
 export default function App() {
-  useAuth();
   return (
     <>
+      <AuthInitializer />
       <Toaster 
         position="top-right" 
         toastOptions={{

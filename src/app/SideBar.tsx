@@ -14,6 +14,8 @@ import {
 import { cn } from "../lib/utils";
 import { useAppStore } from "../store/appStore";
 import { Button } from "../components/ui/Button";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 
 interface NavItemProps {
   icon: React.ElementType;
@@ -53,21 +55,32 @@ const NavItem = ({
 );
 
 export function SideBar() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { signOut } = useAuth();
   const { 
     sidebarCollapsed, 
     mobileMenuOpen,
     toggleSidebar, 
-    activeModule, 
-    setActiveModule
+    setActiveModule,
+    setMobileMenuOpen
   } = useAppStore();
 
-  const navItems: { id: typeof activeModule; label: string; icon: React.ElementType }[] = [
-    { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
-    { id: "focus", label: "Focus Timer", icon: Timer },
-    { id: "log", label: "Ship Log", icon: Ship },
-    { id: "modules", label: "Modules", icon: Layers },
-    { id: "settings", label: "Settings", icon: Settings },
+  const navItems = [
+    { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, path: "/dashboard" },
+    { id: "focus", label: "Focus Timer", icon: Timer, path: "/focus" },
+    { id: "log", label: "Ship Log", icon: Ship, path: "/log" },
+    { id: "modules", label: "Modules", icon: Layers, path: "/modules" },
+    { id: "settings", label: "Settings", icon: Settings, path: "/settings" },
   ];
+
+  const handleNavClick = (id: string, path: string) => {
+    setActiveModule(id as any);
+    navigate(path);
+    if (window.innerWidth < 1024) {
+      setMobileMenuOpen(false);
+    }
+  };
 
   return (
     <motion.aside
@@ -105,9 +118,9 @@ export function SideBar() {
           <NavItem
             key={item.id}
             {...item}
-            isActive={activeModule === item.id}
+            isActive={location.pathname === item.path}
             isCollapsed={sidebarCollapsed && (typeof window !== 'undefined' && window.innerWidth >= 768)}
-            onClick={() => setActiveModule(item.id)}
+            onClick={() => handleNavClick(item.id, item.path)}
           />
         ))}
       </nav>
@@ -126,6 +139,7 @@ export function SideBar() {
         <Button
           variant="ghost"
           size={sidebarCollapsed ? "icon" : "default"}
+          onClick={() => signOut()}
           className={cn(
             "w-full justify-start text-mist hover:text-red-400 hover:bg-red-400/10",
             (sidebarCollapsed && typeof window !== 'undefined' && window.innerWidth >= 768) && "justify-center"

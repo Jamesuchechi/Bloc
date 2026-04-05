@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useAuth } from "@/hooks/useAuth";
+import { useAppStore } from "@/store/appStore";
 import { useShipLogStore } from "@/store/shipLogStore";
 import { LogFilterBar } from "../modules/shiplog/components/LogFilterBar";
 import { LogList } from "../modules/shiplog/components/LogList";
@@ -10,7 +10,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Ship, Info } from "lucide-react";
 
 export default function ShipLogPage() {
-  const { user } = useAuth();
+  const { user } = useAppStore();
   const { fetchEntries, filters } = useShipLogStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingEntry, setEditingEntry] = useState<LogEntryExtended | undefined>();

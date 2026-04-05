@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useFocusStore } from "@/store/focusStore";
-import { useAuth } from "@/hooks/useAuth";
+import { useAppStore } from "@/store/appStore";
 import { focusApi } from "@/modules/focus/api";
 import { SessionSetup } from "@/modules/focus/components/SessionSetup";
 import { ActiveSession } from "@/modules/focus/components/ActiveSession";
@@ -9,7 +9,7 @@ import { EndSessionModal } from "@/modules/focus/components/EndSessionModal";
 import { toast } from "react-hot-toast";
 
 export default function FocusPage() {
-  const { user } = useAuth();
+  const { user } = useAppStore();
   const { activeSession, setActiveSession, startTimer, resetTimer, elapsed } = useFocusStore();
   const [showEndModal, setShowEndModal] = useState(false);
 

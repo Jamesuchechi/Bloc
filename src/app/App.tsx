@@ -5,6 +5,8 @@ import SignIn from "../pages/auth/SignIn";
 import SignUp from "../pages/auth/SignUp";
 import Landing from "../pages/Landing";
 import Dashboard from "../pages/Dashboard";
+import Profile from "../pages/Profile";
+import NotFound from "../pages/NotFound";
 import { PlaceholderPage } from "../pages/PlaceholderPage";
 import { Timer, Layers, Settings, FileText, Users, ClipboardList } from "lucide-react";
 
@@ -27,6 +29,10 @@ export default function App() {
             element={<Dashboard />} 
           />
           <Route 
+            path="/profile" 
+            element={<Profile />} 
+          />
+          <Route 
             path="/modules" 
             element={<PlaceholderPage title="Modules" description="Manage and enable additional BLOC modules." icon={Layers} />} 
           />
@@ -44,14 +50,13 @@ export default function App() {
           />
           <Route 
             path="/settings" 
-            element={<PlaceholderPage title="Settings" description="Customize your BLOC experience and profile." icon={Settings} />} 
-          />
-          <Route 
-            path="*" 
-            element={<PlaceholderPage title="404 - Not Found" description="The page you're looking for doesn't exist." />} 
+            element={<PlaceholderPage title="Settings" description="Customize your BLOC experience and sector preferences." icon={Settings} />} 
           />
         </Route>
       </Route>
+
+      {/* 404 Catch-all */}
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }

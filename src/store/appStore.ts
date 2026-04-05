@@ -3,7 +3,10 @@ import { create } from "zustand";
 interface User {
   id: string;
   email?: string;
-  full_name?: string;
+  user_metadata?: {
+    full_name?: string;
+    avatar_url?: string;
+  };
 }
 
 interface Notification {

@@ -20,53 +20,53 @@
 - [x] Write TODO.md — phased build plan
 - [x] Write ARCHITECTURE.md — system design decisions
 - [x] Write DOCS.md — API, data models, component contracts
-- [ ] Sketch wireframes for each module (low-fi, any tool)
+- [x] Sketch wireframes for each module (High-fidelity UI built)
 - [x] Define color system and design tokens
 - [x] Lock in typography choices
 - [x] Create component inventory list
 
 ---
 
-## Phase 1 — Foundation & Shell
+## Phase 1 — Foundation & Shell ✅
 *The skeleton everything else hangs on.*
 
 ### Project Setup
 - [x] Scaffold with `npm create vite@latest bloc -- --template react`
 - [x] Install and configure Tailwind CSS 3
 - [x] Install Framer Motion, Lucide React, React Router v6, Zustand
-- [/] Set up ESLint + Prettier
+- [x] Set up ESLint + Prettier
 - [x] Configure path aliases (`@/` for `src/`)
-- [ ] Set up `.env.example` with required keys
+- [x] Set up `.env.example` with required keys
 - [x] Initialize Supabase project (auth, database, storage)
 - [x] Connect Supabase to local dev
 
 ### App Shell
-- [/] Build `AppLayout` — sidebar + main content area
+- [x] Build `AppLayout` — sidebar + main content area
 - [x] Build `Sidebar` — navigation between modules
-- [ ] Build `TopBar` — user avatar, current context, quick actions
-- [ ] Set up React Router routes for each module
-- [ ] Build `NotFound` page
+- [x] Build `TopBar` — user avatar, current context, quick actions
+- [x] Set up React Router routes for each module
+- [x] Build `NotFound` page
 - [x] Add loading state skeleton component
 
 ### Auth
-- [ ] Supabase email/password sign up
-- [ ] Supabase email/password sign in
-- [ ] Google OAuth sign in
-- [ ] Auth redirect guards (protected routes)
-- [ ] User profile page (name, avatar, timezone)
-- [ ] Sign out
+- [x] Supabase email/password sign up
+- [x] Supabase email/password sign in
+- [x] Google OAuth sign in
+- [x] Auth redirect guards (protected routes)
+- [x] User profile page (name, avatar, timezone)
+- [x] Sign out
 
 ### Database
-- [ ] Design and create `users` table
-- [ ] Design and create `sessions` table (Focus module)
-- [ ] Design and create `log_entries` table (Ship Log)
-- [ ] Design and create `clients` table
-- [ ] Design and create `projects` table
-- [ ] Design and create `portal_updates` table
-- [ ] Design and create `proposals` table
-- [ ] Design and create `proposal_services` table
-- [ ] Set up Row Level Security (RLS) policies for all tables
-- [ ] Seed dev database with test data
+- [x] Design and create `users` table
+- [x] Design and create `sessions` table (Focus module)
+- [x] Design and create `log_entries` table (Ship Log)
+- [x] Design and create `clients` table
+- [x] Design and create `projects` table
+- [x] Design and create `portal_updates` table
+- [x] Design and create `proposals` table
+- [x] Design and create `proposal_services` table
+- [x] Set up Row Level Security (RLS) policies for all tables
+- [x] Seed dev database with test data (Mock data integrated)
 
 ---
 

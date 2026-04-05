@@ -1,0 +1,80 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --ink: #0c0c0b;
+  --chalk: #f0ece4;
+  --mist: #d6d1c7;
+  --amber: #e8a020;
+  --amber-dim: #a06d10;
+  --surface: #161613;
+  --surface2: #1e1d1a;
+  --border: #2a2925;
+  --border2: #3a3832;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-ink text-chalk font-sora antialiased overflow-x-hidden;
+    line-height: 1.6;
+  }
+  ::selection {
+    @apply bg-amber text-ink;
+  }
+}
+
+@layer components {
+  .hero-grid {
+    @apply absolute inset-0;
+    background-image: linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 60px 60px;
+    opacity: 0.4;
+  }
+
+  .text-outline {
+    -webkit-text-stroke: 1.5px var(--chalk);
+    color: transparent;
+  }
+
+  .text-outline-thin {
+    -webkit-text-stroke: 1px var(--chalk);
+    color: transparent;
+  }
+}
+
+/* Custom Utilities from original HTML */
+.hero-glow {
+  position: absolute;
+  top: 20%;
+  left: 35%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(232, 160, 32, 0.12) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.cta-glow {
+  position: absolute;
+  bottom: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 700px;
+  height: 400px;
+  background: radial-gradient(ellipse, rgba(232, 160, 32, 0.1) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.flow-step:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  left: 23px;
+  top: 48px;
+  bottom: -1px;
+  width: 1px;
+  background: var(--border2);
+}

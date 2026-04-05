@@ -44,14 +44,16 @@ export const SessionSetup: React.FC<SessionSetupProps> = ({ onStart }) => {
 
       <Card className="bg-zinc-900/50 border-zinc-800 p-8">
         <form onSubmit={handleSubmit} className="space-y-6">
-          <Input
-            label="Current Focus"
-            placeholder="Designing the dashboard icons..."
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="text-lg py-6"
-            autoFocus
-          />
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-zinc-400">Current Focus</label>
+            <Input
+              placeholder="Designing the dashboard icons..."
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="text-lg py-6"
+              autoFocus
+            />
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">

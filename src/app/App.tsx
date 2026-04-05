@@ -9,6 +9,8 @@ import Profile from "../pages/Profile";
 import NotFound from "../pages/NotFound";
 import FocusPage from "../pages/FocusPage";
 import VerifyEmail from "../pages/auth/VerifyEmail";
+import ShipLogPage from "../pages/ShipLogPage";
+import PublicSummaryPage from "../pages/PublicSummaryPage";
 import { PlaceholderPage } from "../pages/PlaceholderPage";
 import { Timer, Layers, Settings, FileText, Users, ClipboardList } from "lucide-react";
 import { Toaster } from "react-hot-toast";
@@ -32,6 +34,7 @@ export default function App() {
         <Route path="/login" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/verify-email" element={<VerifyEmail />} />
+      <Route path="/summary" element={<PublicSummaryPage />} />
         
         {/* Protected App Routes */}
         <Route element={<AuthGuard />}>
@@ -43,10 +46,7 @@ export default function App() {
               path="/modules" 
               element={<PlaceholderPage title="Modules" description="Manage and enable additional BLOC modules." icon={Layers} />} 
             />
-            <Route 
-              path="/log" 
-              element={<PlaceholderPage title="Ship Log" description="A record of everything you've built." icon={FileText} />} 
-            />
+            <Route path="/log" element={<ShipLogPage />} />
             <Route 
               path="/clients" 
               element={<PlaceholderPage title="Clients" description="Manage your client relationships and portals." icon={Users} />} 

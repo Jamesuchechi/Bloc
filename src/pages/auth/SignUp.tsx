@@ -21,8 +21,17 @@ export default function SignUp() {
     setLoading(true);
     setError(null);
     try {
-      await signUp(email, password, fullName);
-      navigate("/focus");
+      const data = await signUp(email, password, fullName);
+      
+      // If session exists, they are logged in (verification could be disabled)
+      if (data?.session) {
+        navigate("/focus");
+      } else {
+        // Otherwise, move to verification instruction page
+        navigate("/verify-email");
+      }
+    } catch (err: any) {
+      setError(err.message || "Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }

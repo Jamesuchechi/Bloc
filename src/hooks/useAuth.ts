@@ -58,7 +58,7 @@ export function useAuth() {
 
   const signUp = async (email: string, password: string, fullName: string) => {
     // @ts-ignore
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -68,6 +68,7 @@ export function useAuth() {
       },
     });
     if (error) throw error;
+    return data;
   };
 
   const signIn = async (email: string, password: string) => {

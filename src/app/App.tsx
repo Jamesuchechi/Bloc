@@ -7,56 +7,64 @@ import Landing from "../pages/Landing";
 import Dashboard from "../pages/Dashboard";
 import Profile from "../pages/Profile";
 import NotFound from "../pages/NotFound";
+import FocusPage from "../pages/FocusPage";
+import VerifyEmail from "../pages/auth/VerifyEmail";
 import { PlaceholderPage } from "../pages/PlaceholderPage";
 import { Timer, Layers, Settings, FileText, Users, ClipboardList } from "lucide-react";
+import { Toaster } from "react-hot-toast";
 
 export default function App() {
   return (
-    <Routes>
-      {/* Public Routes */}
-      <Route path="/" element={<Landing />} />
-      <Route path="/login" element={<SignIn />} />
-      <Route path="/signup" element={<SignUp />} />
-      
-      {/* Protected App Routes */}
-      <Route element={<AuthGuard />}>
-        <Route element={<AppLayout />}>
-          <Route path="/focus" 
-            element={<PlaceholderPage title="Focus Timer" description="Your productivity engine is almost ready." icon={Timer} />} 
-          />
-          <Route 
-            path="/dashboard" 
-            element={<Dashboard />} 
-          />
-          <Route 
-            path="/profile" 
-            element={<Profile />} 
-          />
-          <Route 
-            path="/modules" 
-            element={<PlaceholderPage title="Modules" description="Manage and enable additional BLOC modules." icon={Layers} />} 
-          />
-          <Route 
-            path="/log" 
-            element={<PlaceholderPage title="Ship Log" description="A record of everything you've built." icon={FileText} />} 
-          />
-          <Route 
-            path="/clients" 
-            element={<PlaceholderPage title="Clients" description="Manage your client relationships and portals." icon={Users} />} 
-          />
-          <Route 
-            path="/proposals" 
-            element={<PlaceholderPage title="Proposals" description="Build and send professional project proposals." icon={ClipboardList} />} 
-          />
-          <Route 
-            path="/settings" 
-            element={<PlaceholderPage title="Settings" description="Customize your BLOC experience and sector preferences." icon={Settings} />} 
-          />
+    <>
+      <Toaster 
+        position="top-right" 
+        toastOptions={{
+          style: {
+            background: '#18181b',
+            color: '#fff',
+            border: '1px solid #27272a',
+          },
+        }} 
+      />
+      <Routes>
+        {/* Public Routes */}
+        <Route path="/" element={<Landing />} />
+        <Route path="/login" element={<SignIn />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/verify-email" element={<VerifyEmail />} />
+        
+        {/* Protected App Routes */}
+        <Route element={<AuthGuard />}>
+          <Route element={<AppLayout />}>
+            <Route path="/focus" element={<FocusPage />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route 
+              path="/modules" 
+              element={<PlaceholderPage title="Modules" description="Manage and enable additional BLOC modules." icon={Layers} />} 
+            />
+            <Route 
+              path="/log" 
+              element={<PlaceholderPage title="Ship Log" description="A record of everything you've built." icon={FileText} />} 
+            />
+            <Route 
+              path="/clients" 
+              element={<PlaceholderPage title="Clients" description="Manage your client relationships and portals." icon={Users} />} 
+            />
+            <Route 
+              path="/proposals" 
+              element={<PlaceholderPage title="Proposals" description="Build and send professional project proposals." icon={ClipboardList} />} 
+            />
+            <Route 
+              path="/settings" 
+              element={<PlaceholderPage title="Settings" description="Customize your BLOC experience and sector preferences." icon={Settings} />} 
+            />
+          </Route>
         </Route>
-      </Route>
 
-      {/* 404 Catch-all */}
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+        {/* 404 Catch-all */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </>
   );
 }

@@ -7,7 +7,7 @@
 
 ## Current Status
 
-**Phase:** 1 — Foundation
+**Phase:** 3 — Ship Log
 **Started:** 2026-04-05
 **Target MVP:** Phase 3 complete
 
@@ -70,27 +70,27 @@
 
 ---
 
-## Phase 2 — Focus Module
+## Phase 2 — Focus Module ✅
 *The heartbeat of BLOC. Start here.*
 
 ### Core Session Flow
-- [ ] "What are you working on?" start screen
-- [ ] Project selector (or quick-create inline)
-- [ ] Session timer — countdown or stopwatch mode
-- [ ] Minimal full-screen focus mode (hides everything)
-- [ ] Pause / resume session
-- [ ] End session — prompts for: "what did you complete?"
-- [ ] Session saved to Ship Log automatically on end
+- [x] "What are you working on?" start screen
+- [x] Project selector (or quick-create inline)
+- [x] Session timer — countdown or stopwatch mode
+- [x] Minimal full-screen focus mode (hides everything)
+- [x] Pause / resume session
+- [x] End session — prompts for: "what did you complete?"
+- [x] Session saved to Ship Log automatically on end
 
 ### Session History
-- [ ] Today's sessions listed on Focus home
-- [ ] Total time tracked today (visible in sidebar)
-- [ ] Session streak indicator (days in a row with sessions)
+- [x] Today's sessions listed on Focus home
+- [x] Total time tracked today (visible in sidebar)
+- [x] Session streak indicator (days in a row with sessions)
 
 ### Settings
-- [ ] Default session duration preference
-- [ ] Pomodoro mode toggle (25/5 splits)
-- [ ] Sound/notification on session end
+- [x] Default session duration preference
+- [x] Pomodoro mode toggle (25/5 splits)
+- [x] Sound/notification on session end
 
 ---
 

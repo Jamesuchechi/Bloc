@@ -1,66 +1,101 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
-interface FocusSession {
+interface ActiveSession {
   id: string;
-  name: string;
-  duration: number; // minutes
+  title: string;
+  projectId: string | null;
+  startedAt: string;
 }
 
 interface FocusState {
-  activeSession: FocusSession | null;
-  elapsed: number; // seconds
+  // Session State
+  activeSession: ActiveSession | null;
+  
+  // Timer State
+  elapsed: number; // in seconds
   isRunning: boolean;
   isPaused: boolean;
-  _intervalID: NodeJS.Timeout | null;
-
-  startSession: (session: FocusSession) => void;
-  pauseSession: () => void;
-  resumeSession: () => void;
-  endSession: () => { session: FocusSession | null; duration: number };
+  timerMode: "stopwatch" | "countdown";
+  countdownDuration: number; // in minutes (default 25)
+  
+  // Settings
+  soundEnabled: boolean;
+  pomodoroMode: boolean;
+  
+  // Actions
+  setActiveSession: (session: ActiveSession | null) => void;
+  setElapsed: (elapsed: number) => void;
+  tick: () => void;
+  startTimer: () => void;
+  pauseTimer: () => void;
+  resumeTimer: () => void;
+  resetTimer: () => void;
+  setTimerMode: (mode: FocusState["timerMode"]) => void;
+  setCountdownDuration: (duration: number) => void;
+  setSoundEnabled: (enabled: boolean) => void;
+  setPomodoroMode: (enabled: boolean) => void;
+  togglePause: () => void;
 }
 
-export const useFocusStore = create<FocusState>((set, get) => ({
-  activeSession: null,
-  elapsed: 0,
-  isRunning: false,
-  isPaused: false,
-  _intervalID: null,
-
-  startSession: (session: FocusSession) => {
-    const { _intervalID } = get();
-    if (_intervalID) clearInterval(_intervalID);
-
-    const id = setInterval(() => {
-      if (get().isRunning) {
-        set((s) => ({ elapsed: s.elapsed + 1 }));
-      }
-    }, 1000);
-
-    set({
-      activeSession: session,
-      elapsed: 0,
-      isRunning: true,
-      isPaused: false,
-      _intervalID: id as any as NodeJS.Timeout,
-    });
-  },
-
-  pauseSession: () => set({ isRunning: false, isPaused: true }),
-  resumeSession: () => set({ isRunning: true, isPaused: false }),
-
-  endSession: () => {
-    const { _intervalID, activeSession, elapsed } = get();
-    if (_intervalID) clearInterval(_intervalID);
-    
-    const duration = Math.floor(elapsed / 60);
-    set({
+export const useFocusStore = create<FocusState>()(
+  persist(
+    (set) => ({
       activeSession: null,
       elapsed: 0,
       isRunning: false,
       isPaused: false,
-      _intervalID: null,
-    });
-    
-    return { session: activeSession, duration };
-  },
-}));
+      timerMode: "stopwatch",
+      countdownDuration: 25,
+      soundEnabled: true,
+      pomodoroMode: false,
+
+      setActiveSession: (session) => set({ activeSession: session }),
+      
+      setElapsed: (elapsed) => set({ elapsed }),
+      
+      tick: () => set((state) => {
+        if (!state.isRunning || state.isPaused) return state;
+        
+        if (state.timerMode === "countdown") {
+          const totalSeconds = state.countdownDuration * 60;
+          if (state.elapsed >= totalSeconds) {
+            return { isRunning: false, isPaused: false };
+          }
+          return { elapsed: state.elapsed + 1 };
+        }
+        
+        return { elapsed: state.elapsed + 1 };
+      }),
+
+      startTimer: () => set({ isRunning: true, isPaused: false }),
+      
+      pauseTimer: () => set({ isPaused: true }),
+      
+      resumeTimer: () => set({ isPaused: false }),
+      
+      resetTimer: () => set({ elapsed: 0, isRunning: false, isPaused: false }),
+      
+      togglePause: () => set((state) => ({ isPaused: !state.isPaused })),
+
+      setTimerMode: (timerMode) => set({ timerMode }),
+      
+      setCountdownDuration: (countdownDuration) => set({ countdownDuration }),
+      
+      setSoundEnabled: (soundEnabled) => set({ soundEnabled }),
+      
+      setPomodoroMode: (pomodoroMode) => set({ pomodoroMode }),
+    }),
+    {
+      name: "bloc-focus-storage",
+      partialize: (state) => ({
+        activeSession: state.activeSession,
+        elapsed: state.elapsed,
+        timerMode: state.timerMode,
+        countdownDuration: state.countdownDuration,
+        soundEnabled: state.soundEnabled,
+        pomodoroMode: state.pomodoroMode,
+      }),
+    }
+  )
+);

@@ -31,6 +31,8 @@ import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "../co
 import { Button } from "../components/ui/Button";
 import { Badge } from "../components/ui/Badge";
 import { toast } from "react-hot-toast";
+import { WeeklySummaryCard } from "../components/dashboard/WeeklySummaryCard";
+import { focusApi, Session } from "../modules/focus/api";
 
 const container = {
   hidden: { opacity: 0 },
@@ -51,8 +53,18 @@ export default function Dashboard() {
   
   const navigate = useNavigate();
   const [commits, setCommits] = useState<GitHubCommit[]>([]);
+  const [sessions, setSessions] = useState<Session[]>([]);
   const [isRefreshingGitHub, setIsRefreshingGitHub] = useState(false);
   const userName = user?.user_metadata?.full_name || user?.email?.split('@')[0] || "Builder";
+
+  const fetchWeeklySessions = async (userId: string) => {
+    try {
+      const data = await focusApi.getWeeklySessions(userId);
+      setSessions(data);
+    } catch (err) {
+      console.error("Failed to fetch sessions for summary", err);
+    }
+  };
 
   useEffect(() => {
     if (user) {
@@ -60,6 +72,7 @@ export default function Dashboard() {
       fetchClients(user.id);
       fetchProposals(user.id);
       fetchIntegrations(user.id);
+      fetchWeeklySessions(user.id);
     }
   }, [user, fetchEntries, fetchClients, fetchProposals, fetchIntegrations]);
 
@@ -195,14 +208,14 @@ export default function Dashboard() {
           <CardContent className="h-[340px] w-full pt-4">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={chartData} margin={{ top: 0, right: 10, left: -20, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="4 4" vertical={false} stroke="#ffffff0a" />
-                <XAxis dataKey="date" axisLine={false} tickLine={false} tick={{ fill: '#ffffff33', fontSize: 11, fontWeight: 900 }} dy={10} />
-                <YAxis axisLine={false} tickLine={false} tick={{ fill: '#ffffff33', fontSize: 11, fontWeight: 900 }} dx={-10} />
+                <CartesianGrid strokeDasharray="4 4" vertical={false} stroke="currentColor" className="text-border/10" />
+                <XAxis dataKey="date" axisLine={false} tickLine={false} tick={{ fill: 'currentColor', fontSize: 11, fontWeight: 900 }} className="text-mist/40" dy={10} />
+                <YAxis axisLine={false} tickLine={false} tick={{ fill: 'currentColor', fontSize: 11, fontWeight: 900 }} className="text-mist/40" dx={-10} />
                 <Tooltip 
                   cursor={{ fill: 'rgba(255,255,255,0.03)' }}
-                  contentStyle={{ backgroundColor: '#09090b', border: '1px solid #27272a', borderRadius: '16px', boxShadow: '0 20px 50px rgba(0,0,0,0.5)', padding: '16px' }}
+                  contentStyle={{ backgroundColor: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '16px', boxShadow: '0 20px 50px rgba(0,0,0,0.2)', padding: '16px' }}
                   itemStyle={{ fontSize: '12px', fontWeight: 'bold' }}
-                  labelStyle={{ color: '#71717a', fontWeight: '900', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '8px' }}
+                  labelStyle={{ color: 'var(--mist)', fontWeight: '900', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '8px' }}
                 />
                 {chartProjects.map((p, i) => (
                   <Bar 
@@ -221,6 +234,7 @@ export default function Dashboard() {
 
         {/* GitHub / Side Column */}
         <div className="space-y-6">
+          <WeeklySummaryCard sessions={sessions} logs={entries} />
           {/* GitHub Card */}
           <Card className={`relative overflow-hidden bg-black/40 border-border/10 shadow-2xl backdrop-blur-3xl transition-all duration-500 ${!githubIntegration ? 'opacity-60 grayscale' : 'hover:border-amber/20'}`}>
             <CardHeader className="pb-4">

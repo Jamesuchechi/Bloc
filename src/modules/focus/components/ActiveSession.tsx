@@ -38,7 +38,7 @@ export const ActiveSession: React.FC<ActiveSessionProps> = ({ onStop }) => {
 
   return (
     <div className={`relative flex flex-col items-center justify-center min-h-[500px] w-full transition-all duration-700 ${
-      isFullScreen ? "fixed inset-0 bg-black z-[100] p-12" : ""
+      isFullScreen ? "fixed inset-0 bg-ink z-[100] p-12" : ""
     }`}>
       
       {/* Background Glow */}
@@ -55,7 +55,7 @@ export const ActiveSession: React.FC<ActiveSessionProps> = ({ onStop }) => {
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="inline-block px-4 py-1.5 rounded-full bg-zinc-900 border border-zinc-800 text-[10px] uppercase font-bold tracking-widest text-zinc-500"
+            className="inline-block px-4 py-1.5 rounded-full bg-surface2 border border-border/40 text-[10px] uppercase font-bold tracking-widest text-mist"
           >
             {timerMode === "stopwatch" ? "Deep Focus" : "Pomodoro Cycle"}
           </motion.div>
@@ -63,7 +63,7 @@ export const ActiveSession: React.FC<ActiveSessionProps> = ({ onStop }) => {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-3xl md:text-5xl font-bold tracking-tight text-white capitalize"
+            className="text-3xl md:text-5xl font-bold tracking-tight text-chalk capitalize"
           >
             {activeSession?.title}
           </motion.h2>
@@ -76,7 +76,7 @@ export const ActiveSession: React.FC<ActiveSessionProps> = ({ onStop }) => {
               cx="50%"
               cy="50%"
               r="48%"
-              className="stroke-zinc-900 fill-none"
+              className="stroke-border fill-none"
               strokeWidth="4"
             />
             {timerMode === "countdown" && (
@@ -100,7 +100,7 @@ export const ActiveSession: React.FC<ActiveSessionProps> = ({ onStop }) => {
               key={formatTime(remainingTime)}
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              className="text-7xl md:text-9xl font-black tracking-tighter text-white tabular-nums"
+              className="text-7xl md:text-9xl font-black tracking-tighter text-chalk tabular-nums"
             >
               {formatTime(remainingTime)}
             </motion.div>
@@ -125,14 +125,14 @@ export const ActiveSession: React.FC<ActiveSessionProps> = ({ onStop }) => {
 
               <button
                 onClick={onStop}
-                className="w-16 h-16 rounded-full flex items-center justify-center bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-white hover:bg-zinc-800 hover:border-red-500/50 transition-all"
+                className="w-16 h-16 rounded-full flex items-center justify-center bg-surface2 border border-border/40 text-mist hover:text-chalk hover:bg-surface hover:border-red-500/50 transition-all shadow-lg"
               >
                 <Square className="w-6 h-6 fill-current" />
               </button>
 
               <button
                 onClick={toggleFullScreen}
-                className="w-16 h-16 rounded-full flex items-center justify-center bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-white hover:bg-zinc-800 transition-all"
+                className="w-16 h-16 rounded-full flex items-center justify-center bg-surface2 border border-border/40 text-mist hover:text-chalk hover:bg-surface transition-all shadow-lg"
               >
                 {isFullScreen ? <Minimize2 className="w-6 h-6" /> : <Maximize2 className="w-6 h-6" />}
               </button>
@@ -149,7 +149,7 @@ export const ActiveSession: React.FC<ActiveSessionProps> = ({ onStop }) => {
               </div>
               <Button 
                 onClick={onStop}
-                className="bg-orange-500 text-white font-bold py-6 px-12 text-lg rounded-2xl"
+                className="bg-amber text-ink font-bold py-6 px-12 text-lg rounded-2xl shadow-xl shadow-amber/10"
               >
                 Log Progress & End
               </Button>
@@ -160,7 +160,7 @@ export const ActiveSession: React.FC<ActiveSessionProps> = ({ onStop }) => {
 
       {/* Zen Mode Hints */}
       {isFullScreen && (
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-zinc-600 text-[10px] font-medium tracking-widest uppercase animate-pulse">
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-mist opacity-40 text-[10px] font-black uppercase tracking-widest animate-pulse">
           Esc to exit Zen Mode
         </div>
       )}

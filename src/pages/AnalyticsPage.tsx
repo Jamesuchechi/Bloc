@@ -174,12 +174,12 @@ export default function AnalyticsPage() {
                     <stop offset="95%" stopColor="#e8a020" stopOpacity={0}/>
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#ffffff0a" />
-                <XAxis dataKey="date" axisLine={false} tickLine={false} tick={{fill: '#ffffff33', fontSize: 10, fontWeight: 900}} dy={10} />
-                <YAxis axisLine={false} tickLine={false} tick={{fill: '#ffffff33', fontSize: 10, fontWeight: 900}} dx={-10} />
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="currentColor" className="text-border/10" />
+                <XAxis dataKey="date" axisLine={false} tickLine={false} tick={{fill: 'currentColor', fontSize: 10, fontWeight: 900}} className="text-mist/40" dy={10} />
+                <YAxis axisLine={false} tickLine={false} tick={{fill: 'currentColor', fontSize: 10, fontWeight: 900}} className="text-mist/40" dx={-10} />
                 <Tooltip 
-                  contentStyle={{ backgroundColor: '#09090b', border: '1px solid #27272a', borderRadius: '12px', boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }}
-                  labelStyle={{ color: '#71717a', fontWeight: 'bold', marginBottom: '4px', textTransform: 'uppercase', fontSize: '10px' }}
+                  contentStyle={{ backgroundColor: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '12px', boxShadow: '0 10px 30px rgba(0,0,0,0.2)' }}
+                  labelStyle={{ color: 'var(--mist)', fontWeight: 'bold', marginBottom: '4px', textTransform: 'uppercase', fontSize: '10px' }}
                 />
                 <Area type="monotone" dataKey="hours" stroke="#e8a020" strokeWidth={4} fillOpacity={1} fill="url(#colorHours)" />
               </AreaChart>
@@ -212,7 +212,7 @@ export default function AnalyticsPage() {
                   ))}
                 </Pie>
                 <Tooltip 
-                  contentStyle={{ backgroundColor: '#09090b', border: '1px solid #27272a', borderRadius: '12px' }}
+                  contentStyle={{ backgroundColor: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '12px' }}
                 />
               </PieChart>
             </ResponsiveContainer>
@@ -241,8 +241,8 @@ export default function AnalyticsPage() {
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={funnelData} layout="vertical" margin={{ left: 20 }}>
                   <XAxis type="number" hide />
-                  <YAxis dataKey="name" type="category" axisLine={false} tickLine={false} tick={{fill: '#fff', fontSize: 12, fontWeight: 'bold'}} />
-                  <Tooltip cursor={{ fill: 'transparent' }} contentStyle={{backgroundColor: '#18181b', border: '1px solid #27272a'}} />
+                  <YAxis dataKey="name" type="category" axisLine={false} tickLine={false} tick={{fill: 'var(--chalk)', fontSize: 12, fontWeight: 'bold'}} />
+                  <Tooltip cursor={{ fill: 'transparent' }} contentStyle={{backgroundColor: 'var(--surface2)', border: '1px solid var(--border)'}} />
                   <Bar dataKey="count" radius={[0, 4, 4, 0]}>
                     {funnelData.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={entry.name === 'Signed' ? '#34d399' : '#ffffff20'} />

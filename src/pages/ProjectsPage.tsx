@@ -108,22 +108,24 @@ export default function ProjectsPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-1 p-1 bg-surface2/30 border border-border/5 rounded-2xl w-fit backdrop-blur-md">
-        {tabs.map((tab) => (
-          <button
-            key={tab.id}
-            onClick={() => setActiveTab(tab.id as any)}
-            className={cn(
-              "flex items-center gap-2 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all duration-300",
-              activeTab === tab.id 
-                ? "bg-amber text-ink shadow-[0_0_20px_rgba(232,160,32,0.2)]" 
-                : "text-mist/40 hover:text-mist hover:bg-surface2/50"
-            )}
-          >
-            <tab.icon className={cn("h-3 w-3", activeTab === tab.id ? "" : "opacity-40")} />
-            {tab.label}
-          </button>
-        ))}
+      <div className="w-full overflow-x-auto pb-4 scrollbar-hide">
+        <div className="flex items-center gap-1 p-1 bg-surface2/30 border border-border/5 rounded-2xl w-fit backdrop-blur-md whitespace-nowrap">
+          {tabs.map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id as any)}
+              className={cn(
+                "flex items-center gap-2 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all duration-300",
+                activeTab === tab.id 
+                  ? "bg-amber text-ink shadow-[0_0_20px_rgba(232,160,32,0.2)]" 
+                  : "text-mist/40 hover:text-mist hover:bg-surface2/50"
+              )}
+            >
+              <tab.icon className={cn("h-3 w-3", activeTab === tab.id ? "" : "opacity-40")} />
+              {tab.label}
+            </button>
+          ))}
+        </div>
       </div>
 
       {loading ? (

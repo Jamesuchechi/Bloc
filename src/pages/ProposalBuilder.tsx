@@ -8,6 +8,10 @@ import { Proposal, ProposalService, ServiceSnippet, proposalApi } from "@/module
 import { usePortalStore } from "@/store/portalStore";
 import { useProposalStore } from "@/store/proposalStore";
 import { toast } from "react-hot-toast";
+import { AIAssistant } from "@/components/ai/AIAssistant";
+import { AIStatus } from "@/components/ai/AIStatus";
+import { ai } from "@/lib/ai";
+import { Sparkles } from "lucide-react";
 
 export default function ProposalBuilder() {
   const { id } = useParams<{ id: string }>();
@@ -21,6 +25,37 @@ export default function ProposalBuilder() {
   const [services, setServices] = useState<Partial<ProposalService>[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
+  const [isSuggesting, setIsSuggesting] = useState(false);
+
+  const handleSuggestItems = async () => {
+    if (!proposal || !proposal.title) return;
+    if (!ai.isConfigured) {
+      toast.error("AI API Key not found. Check your settings.");
+      return;
+    }
+
+    setIsSuggesting(true);
+    try {
+      const items = await ai.suggestLineItems(proposal.title, proposal.scope || "");
+      if (items && items.length > 0) {
+        setServices(prev => [
+          ...prev,
+          ...items.map((it: any, i: number) => ({
+            name: it.name,
+            description: it.description,
+            unit_price: it.unit_price,
+            quantity: 1,
+            position: prev.length + i
+          }))
+        ]);
+        toast.success(`AI suggested ${items.length} new items`);
+      }
+    } catch (err: any) {
+      toast.error(err.message);
+    } finally {
+      setIsSuggesting(false);
+    }
+  };
 
   useEffect(() => {
     if (!user) return;
@@ -244,7 +279,14 @@ export default function ProposalBuilder() {
         <div className="space-y-6 lg:col-span-2">
           
           <div className="bg-surface/50 border border-border/30 rounded-3xl p-6">
-            <h3 className="text-lg font-bold text-chalk mb-4">Project Scope / Summary</h3>
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-bold text-chalk">Project Scope / Summary</h3>
+              <AIAssistant 
+                context={proposal.scope || ''} 
+                onApply={(text) => handlePropChange('scope', text)} 
+                label="Refine Scope"
+              />
+            </div>
             <textarea
               value={proposal.scope || ''}
               onChange={e => handlePropChange('scope', e.target.value)}
@@ -258,9 +300,21 @@ export default function ProposalBuilder() {
               <h3 className="text-lg font-bold text-chalk flex items-center gap-2">
                 <List className="h-5 w-5 text-amber" /> Line Items
               </h3>
-              <div className="bg-surface2 px-4 py-1.5 rounded-full border border-border/20">
-                <span className="text-[10px] uppercase text-mist mr-2 font-bold tracking-widest">Subtotal</span>
-                <span className="font-black text-chalk">${totalValue.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
+              <div className="flex items-center gap-4">
+                <AIStatus isThinking={isSuggesting} statusText="Generating items..." />
+                <Button
+                  onClick={handleSuggestItems}
+                  variant="ghost"
+                  disabled={isSuggesting}
+                  className="h-8 px-3 text-[10px] uppercase font-black tracking-widest gap-2 bg-amber/5 border border-amber/20 hover:bg-amber/10 hover:border-amber/40 transition-all"
+                >
+                  <Sparkles className="h-3 w-3 text-amber" />
+                  Suggest Items
+                </Button>
+                <div className="bg-surface2 px-4 py-1.5 rounded-full border border-border/20">
+                  <span className="text-[10px] uppercase text-mist mr-2 font-bold tracking-widest">Subtotal</span>
+                  <span className="font-black text-chalk">${totalValue.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
+                </div>
               </div>
             </div>
 

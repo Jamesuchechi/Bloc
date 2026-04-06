@@ -1,4 +1,5 @@
 import { supabase } from "@/lib/supabase";
+import { subDays } from "date-fns";
 
 export interface Session {
   id: string;
@@ -95,6 +96,22 @@ export const focusApi = {
       .eq("user_id", userId)
       .gte("started_at", `${today}T00:00:00Z`)
       .lte("started_at", `${today}T23:59:59Z`)
+      .order("started_at", { ascending: false });
+
+    if (error) throw new Error(error.message);
+    return data || [];
+  },
+
+  /**
+   * Fetch sessions from the last 7 days
+   */
+  async getWeeklySessions(userId: string): Promise<Session[]> {
+    const lastWeek = subDays(new Date(), 7).toISOString();
+    const { data, error } = await supabase
+      .from("sessions")
+      .select("*")
+      .eq("user_id", userId)
+      .gte("started_at", lastWeek)
       .order("started_at", { ascending: false });
 
     if (error) throw new Error(error.message);

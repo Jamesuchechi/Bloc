@@ -22,6 +22,7 @@ import AnalyticsPage from "../pages/AnalyticsPage";
 import NotificationsPage from "../pages/NotificationsPage";
 import SettingsPage from "../pages/SettingsPage";
 import ProjectsPage from "../pages/ProjectsPage";
+import AIChatPage from "../pages/AIChatPage";
 import { PlaceholderPage } from "../pages/PlaceholderPage";
 import { Timer, Layers, Settings, FileText, Users, ClipboardList } from "lucide-react";
 import { Toaster } from "react-hot-toast";
@@ -71,6 +72,7 @@ export default function App() {
             <Route path="/proposals/:id" element={<ProposalBuilder />} />
             <Route path="/analytics" element={<AnalyticsPage />} />
             <Route path="/notifications" element={<NotificationsPage />} />
+            <Route path="/chat" element={<AIChatPage />} />
             <Route path="/settings" element={<SettingsPage />} />
           </Route>
         </Route>

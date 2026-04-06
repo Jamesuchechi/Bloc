@@ -15,6 +15,7 @@ import {
   Puzzle,
   BarChart3,
   Search,
+  Sparkles,
   Command
 } from "lucide-react";
 import { cn } from "../lib/utils";
@@ -96,6 +97,7 @@ export function SideBar() {
     { id: "proposals", label: "Proposals", icon: ClipboardList, path: "/proposals" },
     { id: "analytics", label: "Analytics", icon: BarChart3, path: "/analytics" },
     { id: "integrations", label: "Integrations", icon: Puzzle, path: "/integrations" },
+    { id: "chat", label: "Bloc AI", icon: Sparkles, path: "/chat" },
     { id: "settings", label: "Settings", icon: Settings, path: "/settings" },
   ];
 

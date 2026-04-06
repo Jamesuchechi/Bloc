@@ -26,6 +26,8 @@ export function TopBar() {
     shiplog: "Ship Log",
     clients: "Clients",
     proposals: "Proposals",
+    notifications: "Inbox",
+    analytics: "Analytics Dashboard"
   };
 
   return (

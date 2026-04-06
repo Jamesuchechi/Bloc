@@ -79,7 +79,7 @@ export default function ProposalBuilder() {
 
   const totalValue = services.reduce((acc, s) => acc + ((s.quantity || 1) * (s.unit_price || 0)), 0);
 
-  const saveProposal = async () => {
+  const handleSave = async (showToast = true) => {
     if (!proposal || !id) return;
     setIsSaving(true);
     try {
@@ -94,11 +94,22 @@ export default function ProposalBuilder() {
         total_value: totalValue
       });
       await proposalApi.saveServicesForProposal(id, services);
-      toast.success("Proposal saved securely");
+      if (showToast) toast.success("Proposal saved securely");
     } catch (e: any) {
       toast.error(e.message);
+      throw e;
     } finally {
       setIsSaving(false);
+    }
+  };
+
+  const handlePreview = async () => {
+    if (!proposal) return;
+    try {
+      await handleSave(false);
+      window.open(`/proposal/${proposal.share_token}`, '_blank');
+    } catch (e) {
+      // Error handled in handleSave
     }
   };
 
@@ -148,12 +159,14 @@ export default function ProposalBuilder() {
               <option value="declined" className="bg-ink">Declined</option>
             </select>
           </div>
-          <a href={`/proposal/${proposal.share_token}`} target="_blank" rel="noopener noreferrer" className="flex-1">
-            <Button variant="outline" className="w-full border-border/30 hover:text-amber gap-2">
-              <ExternalLink className="h-4 w-4" /> Preview
-            </Button>
-          </a>
-          <Button onClick={saveProposal} disabled={isSaving} className="flex-1 bg-amber hover:bg-amber/90 text-ink shadow-lg shadow-amber/10 gap-2">
+          <Button 
+            onClick={handlePreview}
+            variant="outline" 
+            className="flex-1 border-border/30 hover:text-amber gap-2"
+          >
+            <ExternalLink className="h-4 w-4" /> Preview
+          </Button>
+          <Button onClick={() => handleSave()} disabled={isSaving} className="flex-1 bg-amber hover:bg-amber/90 text-ink shadow-lg shadow-amber/10 gap-2">
             <Save className="h-4 w-4" /> {isSaving ? "Saving..." : "Save"}
           </Button>
         </div>

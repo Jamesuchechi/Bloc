@@ -154,7 +154,7 @@ export function SideBar() {
           badge={unreadCount}
           isActive={activeModule === "notifications"}
           isCollapsed={sidebarCollapsed && (typeof window !== 'undefined' && window.innerWidth >= 768)}
-          onClick={() => setActiveModule("notifications")}
+          onClick={() => handleNavClick("notifications", "/notifications")}
         />
         
         <Button

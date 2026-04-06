@@ -14,6 +14,9 @@ import PublicSummaryPage from "../pages/PublicSummaryPage";
 import ClientsPage from "../pages/ClientsPage";
 import ClientDetail from "../pages/ClientDetail";
 import PublicPortalPage from "../pages/PublicPortalPage";
+import ProposalsPage from "../pages/ProposalsPage";
+import ProposalBuilder from "../pages/ProposalBuilder";
+import PublicProposalPage from "../pages/PublicProposalPage";
 import { PlaceholderPage } from "../pages/PlaceholderPage";
 import { Timer, Layers, Settings, FileText, Users, ClipboardList } from "lucide-react";
 import { Toaster } from "react-hot-toast";
@@ -46,6 +49,7 @@ export default function App() {
         <Route path="/verify-email" element={<VerifyEmail />} />
         <Route path="/summary" element={<PublicSummaryPage />} />
         <Route path="/portal/:token" element={<PublicPortalPage />} />
+        <Route path="/proposal/:token" element={<PublicProposalPage />} />
         
         {/* Protected App Routes */}
         <Route element={<AuthGuard />}>
@@ -60,12 +64,10 @@ export default function App() {
             <Route path="/log" element={<ShipLogPage />} />
             <Route path="/clients" element={<ClientsPage />} />
             <Route path="/clients/:id" element={<ClientDetail />} />
+            <Route path="/proposals" element={<ProposalsPage />} />
+            <Route path="/proposals/:id" element={<ProposalBuilder />} />
             <Route 
-              path="/proposals" 
-              element={<PlaceholderPage title="Proposals" description="Build and send professional project proposals." icon={ClipboardList} />} 
-            />
-            <Route 
-              path="/settings" 
+              path="/settings"  
               element={<PlaceholderPage title="Settings" description="Customize your BLOC experience and sector preferences." icon={Settings} />} 
             />
           </Route>

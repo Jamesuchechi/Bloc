@@ -7,9 +7,9 @@
 
 ## Current Status
 
-**Phase:** 5 — Proposal Builder Module
+**Phase:** 6 — Cross-Module Polish
 **Started:** 2026-04-06
-**Target MVP:** Phase 5 start
+**Target MVP:** Phase 6 start
 
 ---
 
@@ -151,40 +151,40 @@
 
 ---
 
-## Phase 5 — Proposal Builder Module
+## Phase 5 — Proposal Builder Module ✅
 *Close the deal without leaving BLOC.*
 
 ### Proposal Creation
-- [ ] Create proposal — link to existing client or create new
-- [ ] Add services (name, description, price, optional quantity)
-- [ ] Reorder services via drag-and-drop
-- [ ] Write project scope (rich text)
-- [ ] Set timeline (start date, duration or end date)
-- [ ] Set payment terms (full upfront, 50/50, monthly)
-- [ ] Add optional terms & conditions block
+- [x] Create proposal — link to existing client or create new
+- [x] Add services (name, description, price, optional quantity)
+- [x] Reorder services via drag-and-drop
+- [x] Write project scope (rich text)
+- [x] Set timeline (start date, duration or end date)
+- [x] Set payment terms (full upfront, 50/50, monthly)
+- [x] Add optional terms & conditions block
 
 ### Proposal Preview & Sharing
-- [ ] Live preview as you build
-- [ ] Generate clean proposal page (`/proposal/[token]`)
-- [ ] PDF export of proposal
-- [ ] Copy shareable link
+- [x] Live preview as you build
+- [x] Generate clean proposal page (`/proposal/[token]`)
+- [x] PDF export of proposal
+- [x] Copy shareable link
 
 ### Digital Signing
-- [ ] Client can type their name to sign
-- [ ] Timestamp and IP logged on signing
-- [ ] Builder gets email notification on signing
-- [ ] Signed proposals locked from editing
+- [x] Client can type their name to sign
+- [x] Timestamp and IP logged on signing
+- [x] Builder gets email notification on signing
+- [x] Signed proposals locked from editing
 
 ### Post-Sign Automation
-- [ ] Signed proposal auto-creates client (if new)
-- [ ] Auto-creates project linked to that client
-- [ ] Proposal shows as "Won" in proposal list
+- [x] Signed proposal auto-creates client (if new)
+- [x] Auto-creates project linked to that client
+- [x] Proposal shows as "Won" in proposal list
 
 ### Proposal Management
-- [ ] List view: draft / sent / viewed / signed / declined
-- [ ] Duplicate proposal
-- [ ] Archive proposal
-- [ ] Basic stats: total proposed value, win rate
+- [x] List view: draft / sent / viewed / signed / declined
+- [x] Duplicate proposal
+- [x] Archive proposal
+- [x] Basic stats: total proposed value, win rate
 
 ---
 

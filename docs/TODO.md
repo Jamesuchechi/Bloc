@@ -191,12 +191,12 @@
 ## Phase 6 — Cross-Module Polish
 *Make the whole greater than the sum of its parts.*
 
-- [ ] Dashboard home — today's session, recent log, client activity
+- [x] Dashboard home — today's session, recent log, client activity
 - [ ] Global search across sessions, log entries, clients, proposals
 - [ ] Keyboard shortcuts (cmd+K command palette)
-- [ ] Notifications center (client approved, proposal signed, etc.)
-- [ ] Dark mode support
-- [ ] Mobile responsive layout
+- [x] Notifications center (client approved, proposal signed, etc.)
+- [x] Dark mode support
+- [x] Mobile responsive layout
 - [ ] Onboarding flow for new users (guided first steps)
 
 ---

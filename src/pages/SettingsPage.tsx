@@ -44,17 +44,37 @@ const ACCENT_COLORS = [
 ];
 
 export default function SettingsPage() {
-  const { user, setUser } = useAppStore();
+  const { user, setUser, theme, setTheme, accentColor, setAccentColor } = useAppStore();
   const { signOut } = useAuth();
   
+  // Profile State
   const [fullName, setFullName] = useState(user?.user_metadata?.full_name || "");
   const [isUpdatingProfile, setIsUpdatingProfile] = useState(false);
   const [showSaveSuccess, setShowSaveSuccess] = useState(false);
 
+  // Security State
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [isUpdatingPassword, setIsUpdatingPassword] = useState(false);
+
+  // Notification State (Stored in user_metadata)
+  const [prefs, setPrefs] = useState({
+    email_proposals: user?.user_metadata?.prefs?.email_proposals ?? true,
+    email_deliverables: user?.user_metadata?.prefs?.email_deliverables ?? true,
+    email_sessions: user?.user_metadata?.prefs?.email_sessions ?? false,
+    browser_alerts: user?.user_metadata?.prefs?.browser_alerts ?? true,
+  });
+
+  // Region State
+  const [region, setRegion] = useState({
+    timezone: user?.user_metadata?.region?.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone,
+    dateFormat: user?.user_metadata?.region?.dateFormat || "MMM d, yyyy",
+  });
+
+  const timezones = (Intl as any).supportedValuesOf ? (Intl as any).supportedValuesOf('timeZone') : ['UTC', 'Europe/London', 'America/New_York', 'Africa/Lagos'];
+
   useEffect(() => {
-    if (user?.user_metadata?.full_name) {
-      setFullName(user.user_metadata.full_name);
-    }
+    if (user?.user_metadata?.full_name) setFullName(user.user_metadata.full_name);
   }, [user]);
 
   const handleUpdateProfile = async (e: React.FormEvent) => {
@@ -64,20 +84,62 @@ export default function SettingsPage() {
       const { data, error } = await supabase.auth.updateUser({
         data: { full_name: fullName }
       });
-      
       if (error) throw error;
-      
       if (data.user) {
         setUser(data.user as any);
-        toast.success("Profile updated successfully!");
+        toast.success("Profile updated");
         setShowSaveSuccess(true);
         setTimeout(() => setShowSaveSuccess(false), 3000);
       }
     } catch (err: any) {
-      toast.error(err.message || "Failed to update profile");
+      toast.error(err.message);
     } finally {
       setIsUpdatingProfile(false);
     }
+  };
+
+  const handleUpdatePassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (newPassword !== confirmPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
+    if (newPassword.length < 6) {
+      toast.error("Password must be at least 6 characters");
+      return;
+    }
+
+    setIsUpdatingPassword(true);
+    try {
+      const { error } = await supabase.auth.updateUser({ password: newPassword });
+      if (error) throw error;
+      toast.success("Password updated successfully");
+      setNewPassword("");
+      setConfirmPassword("");
+    } catch (err: any) {
+      toast.error(err.message);
+    } finally {
+      setIsUpdatingPassword(false);
+    }
+  };
+
+  const updateMetadata = async (key: string, value: any) => {
+    try {
+      const currentMetadata = user?.user_metadata || {};
+      const { data, error } = await supabase.auth.updateUser({
+        data: { ...currentMetadata, [key]: value }
+      });
+      if (error) throw error;
+      if (data.user) setUser(data.user as any);
+      toast.success("Settings saved");
+    } catch (err: any) {
+      toast.error(err.message);
+    }
+  };
+
+  const scrollIntoView = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   return (
@@ -100,18 +162,18 @@ export default function SettingsPage() {
       >
         
         {/* Navigation Sidebar (Local) */}
-        <div className="lg:col-span-1 space-y-4">
+        <div className="lg:col-span-1 space-y-4 sticky top-10 h-fit">
            <SettingsSection title="Personal" items={[
-             { id: 'profile', label: 'Builder Profile', icon: User, active: true },
-             { id: 'account', label: 'Account Security', icon: Shield },
+             { id: 'profile', label: 'Builder Profile', icon: User, active: true, onClick: () => scrollIntoView('profile') },
+             { id: 'account', label: 'Account Security', icon: Shield, active: true, onClick: () => scrollIntoView('security') },
            ]} />
            <SettingsSection title="Preferences" items={[
-             { id: 'appearance', label: 'Interface & Themes', icon: Palette },
-             { id: 'notifications', label: 'Notification Rules', icon: Bell },
+             { id: 'appearance', label: 'Interface & Themes', icon: Palette, active: true, onClick: () => scrollIntoView('appearance') },
+             { id: 'notifications', label: 'Notification Rules', icon: Bell, active: true, onClick: () => scrollIntoView('notifications') },
            ]} />
            <SettingsSection title="Workspace" items={[
-             { id: 'integrations', label: 'Third-Party Links', icon: Zap },
-             { id: 'region', label: 'Region & Timezone', icon: Globe },
+             { id: 'integrations', label: 'Third-Party Links', icon: Zap, active: false },
+             { id: 'region', label: 'Region & Timezone', icon: Globe, active: true, onClick: () => scrollIntoView('region') },
            ]} />
            
            <div className="pt-6">
@@ -126,10 +188,10 @@ export default function SettingsPage() {
         </div>
 
         {/* Settings Content */}
-        <div className="lg:col-span-2 space-y-8">
+        <div className="lg:col-span-2 space-y-12">
            
            {/* Profile Section */}
-           <motion.div variants={item}>
+           <motion.div variants={item} id="profile">
              <Card className="bg-surface/20 border-border/10 backdrop-blur-3xl overflow-hidden shadow-2xl">
                 <CardHeader className="border-b border-border/5 mb-6">
                    <CardTitle className="text-sm font-black uppercase tracking-[0.3em] flex items-center gap-3">
@@ -181,8 +243,55 @@ export default function SettingsPage() {
              </Card>
            </motion.div>
 
+           {/* Security Section */}
+           <motion.div variants={item} id="security">
+             <Card className="bg-surface/20 border-border/10 backdrop-blur-3xl overflow-hidden shadow-2xl">
+                <CardHeader className="border-b border-border/5 mb-6">
+                   <CardTitle className="text-sm font-black uppercase tracking-[0.3em] flex items-center gap-3">
+                      <Shield className="h-4 w-4 text-amber" /> Security
+                   </CardTitle>
+                   <CardDescription>Update your credentials to keep your workspace safe.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                   <form onSubmit={handleUpdatePassword} className="space-y-6">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                         <div className="space-y-2">
+                            <label className="text-[10px] font-black uppercase tracking-widest text-mist/40">New Password</label>
+                            <Input 
+                               type="password"
+                               value={newPassword}
+                               onChange={(e) => setNewPassword(e.target.value)}
+                               className="h-12 bg-surface2/50 border-border/10 text-chalk focus:border-amber/40"
+                               placeholder="Min. 6 characters"
+                            />
+                         </div>
+                         <div className="space-y-2">
+                            <label className="text-[10px] font-black uppercase tracking-widest text-mist/40">Confirm Password</label>
+                            <Input 
+                               type="password"
+                               value={confirmPassword}
+                               onChange={(e) => setConfirmPassword(e.target.value)}
+                               className="h-12 bg-surface2/50 border-border/10 text-chalk focus:border-amber/40"
+                               placeholder="Repeat password"
+                            />
+                         </div>
+                      </div>
+                      <div className="flex justify-end">
+                        <Button 
+                          type="submit"
+                          disabled={isUpdatingPassword || !newPassword}
+                          className="bg-amber hover:bg-amber/90 text-ink h-12 px-8 font-black uppercase tracking-widest text-xs"
+                        >
+                          {isUpdatingPassword ? "Updating..." : "Update Password"}
+                        </Button>
+                      </div>
+                   </form>
+                </CardContent>
+             </Card>
+           </motion.div>
+
            {/* Appearance Section */}
-           <motion.div variants={item}>
+           <motion.div variants={item} id="appearance">
              <Card className="bg-surface/20 border-border/10 backdrop-blur-3xl overflow-hidden shadow-2xl">
                 <CardHeader className="border-b border-border/5 mb-6">
                    <CardTitle className="text-sm font-black uppercase tracking-[0.3em] flex items-center gap-3">
@@ -198,7 +307,8 @@ export default function SettingsPage() {
                          {ACCENT_COLORS.map((c) => (
                             <button 
                                key={c.value}
-                               className={`h-12 w-12 rounded-2xl border-2 transition-all flex items-center justify-center group ${c.value === '#e8a020' ? 'border-amber shadow-[0_0_15px_rgba(232,160,32,0.3)]' : 'border-border/10'}`}
+                               onClick={() => setAccentColor(c.value)}
+                               className={`h-12 w-12 rounded-2xl border-2 transition-all flex items-center justify-center group ${c.value === accentColor ? 'border-chalk shadow-[0_0_15px_var(--amber-dim)] scale-110' : 'border-border/10 hover:border-border/40'}`}
                                style={{ backgroundColor: `${c.value}10` }}
                             >
                                <div className="h-4 w-4 rounded-full" style={{ backgroundColor: c.value }} />
@@ -208,33 +318,125 @@ export default function SettingsPage() {
                    </div>
 
                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      <ThemeButton icon={Sun} label="Light" active={false} />
-                      <ThemeButton icon={Moon} label="Dark" active={true} />
-                      <ThemeButton icon={Monitor} label="System" active={false} />
+                      <ThemeButton 
+                        icon={Sun} 
+                        label="Light" 
+                        active={theme === 'light'} 
+                        onClick={() => setTheme('light')}
+                      />
+                      <ThemeButton 
+                        icon={Moon} 
+                        label="Dark" 
+                        active={theme === 'dark'} 
+                        onClick={() => setTheme('dark')}
+                      />
+                      <ThemeButton 
+                        icon={Monitor} 
+                        label="System" 
+                        active={theme === 'system'} 
+                        onClick={() => setTheme('system')}
+                      />
                    </div>
 
                 </CardContent>
              </Card>
            </motion.div>
 
-           {/* Notifications Toggle (Mock) */}
-           <motion.div variants={item}>
-              <Card className="bg-surface/20 border-border/10 backdrop-blur-3xl opacity-60">
-                 <CardContent className="p-8 flex items-center justify-between">
-                    <div className="flex items-center gap-6">
-                       <div className="h-14 w-14 rounded-2xl bg-surface2 border border-border/10 flex items-center justify-center text-amber">
-                          <Bell className="h-6 w-6" />
-                       </div>
-                       <div>
-                          <h4 className="font-black text-chalk text-lg tracking-tight">Desktop Notifications</h4>
-                          <p className="text-mist/60 text-xs font-medium">Receive real-time alerts even when application is in background.</p>
-                       </div>
-                    </div>
-                    <div className="h-8 w-14 bg-surface2 border border-border/10 rounded-full relative p-1 cursor-not-allowed">
-                       <div className="h-6 w-6 bg-mist/20 rounded-full" />
-                    </div>
-                 </CardContent>
-              </Card>
+           {/* Notifications Section */}
+           <motion.div variants={item} id="notifications">
+             <Card className="bg-surface/20 border-border/10 backdrop-blur-3xl overflow-hidden shadow-2xl">
+                <CardHeader className="border-b border-border/5 mb-6">
+                   <CardTitle className="text-sm font-black uppercase tracking-[0.3em] flex items-center gap-3">
+                      <Bell className="h-4 w-4 text-amber" /> Notifications
+                   </CardTitle>
+                   <CardDescription>Choose how you want to be alerted of business events.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                   <div className="flex items-center justify-between p-4 bg-surface2/30 rounded-2xl border border-border/5">
+                      <div>
+                        <p className="font-bold text-chalk">New Proposal Signed</p>
+                        <p className="text-xs text-mist/60">Email alert when a client accepts your bid.</p>
+                      </div>
+                      <input 
+                        type="checkbox" 
+                        checked={prefs.email_proposals} 
+                        onChange={e => {
+                          const newPrefs = { ...prefs, email_proposals: e.target.checked };
+                          setPrefs(newPrefs);
+                          updateMetadata('prefs', newPrefs);
+                        }}
+                        className="h-5 w-5 rounded border-amber/20 bg-ink text-amber focus:ring-amber/50"
+                      />
+                   </div>
+                   <div className="flex items-center justify-between p-4 bg-surface2/30 rounded-2xl border border-border/5">
+                      <div>
+                        <p className="font-bold text-chalk">Deliverable Approved</p>
+                        <p className="text-xs text-mist/60">Notification when milestones are marked done.</p>
+                      </div>
+                      <input 
+                        type="checkbox" 
+                        checked={prefs.email_deliverables} 
+                        onChange={e => {
+                          const newPrefs = { ...prefs, email_deliverables: e.target.checked };
+                          setPrefs(newPrefs);
+                          updateMetadata('prefs', newPrefs);
+                        }}
+                        className="h-5 w-5 rounded border-amber/20 bg-ink text-amber focus:ring-amber/50"
+                      />
+                   </div>
+                   <div className="flex items-center justify-between p-4 bg-surface2/30 rounded-2xl border border-border/5 opacity-50">
+                      <div>
+                        <p className="font-bold text-chalk text-mist/60 italic">Daily Focus Summary (Coming Soon)</p>
+                      </div>
+                      <div className="h-5 w-5 rounded border-border/10 bg-ink/50" />
+                   </div>
+                </CardContent>
+             </Card>
+           </motion.div>
+
+           {/* Region Section */}
+           <motion.div variants={item} id="region">
+             <Card className="bg-surface/20 border-border/10 backdrop-blur-3xl overflow-hidden shadow-2xl">
+                <CardHeader className="border-b border-border/5 mb-6">
+                   <CardTitle className="text-sm font-black uppercase tracking-[0.3em] flex items-center gap-3">
+                      <Globe className="h-4 w-4 text-amber" /> Region
+                   </CardTitle>
+                   <CardDescription>Adjust localization for dates and time displays.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                   <div className="space-y-2">
+                      <label className="text-[10px] font-black uppercase tracking-widest text-mist/40">Timezone</label>
+                      <select 
+                        value={region.timezone}
+                        onChange={e => {
+                          const newReg = { ...region, timezone: e.target.value };
+                          setRegion(newReg);
+                          updateMetadata('region', newReg);
+                        }}
+                        className="w-full h-12 bg-surface2/50 border-border/10 text-chalk rounded-xl px-4 focus:border-amber/40 outline-none"
+                      >
+                        {timezones.map((tz: string) => <option key={tz} value={tz} className="bg-ink">{tz}</option>)}
+                      </select>
+                   </div>
+                   <div className="space-y-2">
+                      <label className="text-[10px] font-black uppercase tracking-widest text-mist/40">Date Format</label>
+                      <select 
+                        value={region.dateFormat}
+                        onChange={e => {
+                          const newReg = { ...region, dateFormat: e.target.value };
+                          setRegion(newReg);
+                          updateMetadata('region', newReg);
+                        }}
+                        className="w-full h-12 bg-surface2/50 border-border/10 text-chalk rounded-xl px-4 focus:border-amber/40 outline-none"
+                      >
+                        <option value="MMM d, yyyy" className="bg-ink">Oct 24, 2023</option>
+                        <option value="dd/MM/yyyy" className="bg-ink">24/10/2023</option>
+                        <option value="MM/dd/yyyy" className="bg-ink">10/24/2023</option>
+                        <option value="yyyy-MM-dd" className="bg-ink">2023-10-24</option>
+                      </select>
+                   </div>
+                </CardContent>
+             </Card>
            </motion.div>
 
         </div>
@@ -253,7 +455,8 @@ function SettingsSection({ title, items }: { title: string, items: any[] }) {
             <button 
               key={item.id}
               disabled={!item.active}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-bold transition-all ${item.active ? 'bg-amber/10 text-amber' : 'text-mist/40 hover:bg-white/5 cursor-not-allowed'}`}
+              onClick={item.onClick}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-bold transition-all ${item.active ? 'hover:bg-amber/5 text-mist/80 hover:text-amber' : 'text-mist/40 cursor-not-allowed'}`}
             >
               <item.icon className="h-4 w-4" />
               {item.label}
@@ -265,9 +468,12 @@ function SettingsSection({ title, items }: { title: string, items: any[] }) {
   )
 }
 
-function ThemeButton({ icon: Icon, label, active }: { icon: any, label: string, active: boolean }) {
+function ThemeButton({ icon: Icon, label, active, onClick }: { icon: any, label: string, active: boolean, onClick: () => void }) {
   return (
-    <button className={`p-6 rounded-3xl border transition-all flex flex-col items-center gap-3 group ${active ? 'bg-amber/10 border-amber/40 text-chalk' : 'bg-surface2/30 border-border/5 text-mist/40 hover:border-border/20'}`}>
+    <button 
+      onClick={onClick}
+      className={`p-6 rounded-3xl border transition-all flex flex-col items-center gap-3 group ${active ? 'bg-amber/10 border-amber/40 text-chalk shadow-[0_0_20px_var(--amber-dim)]' : 'bg-surface2/30 border-border/5 text-mist/40 hover:border-border/20'}`}
+    >
        <Icon className={`h-6 w-6 ${active ? 'text-amber' : 'group-hover:text-mist'}`} />
        <span className="text-[10px] font-black uppercase tracking-widest">{label}</span>
     </button>

@@ -2,9 +2,27 @@ import { Outlet } from "react-router-dom";
 import { SideBar } from "../../app/SideBar";
 import { TopBar } from "./TopBar";
 import { useAppStore } from "../../store/appStore";
+import { useEffect } from "react";
 
 export function AppLayout() {
-  const { mobileMenuOpen, setMobileMenuOpen } = useAppStore();
+  const { mobileMenuOpen, setMobileMenuOpen, theme, accentColor } = useAppStore();
+
+  useEffect(() => {
+    // Apply Theme
+    const root = document.documentElement;
+    if (theme === 'system') {
+      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      root.setAttribute('data-theme', systemTheme);
+    } else {
+      root.setAttribute('data-theme', theme);
+    }
+
+    // Apply Accent Color
+    root.style.setProperty('--amber', accentColor);
+    
+    // Simple helper to dim the color (30% opacity equivalent for shadows/borders)
+    root.style.setProperty('--amber-dim', `${accentColor}4d`);
+  }, [theme, accentColor]);
 
   return (
     <div className="flex bg-ink min-h-screen text-chalk font-sora antialiased overflow-hidden relative">

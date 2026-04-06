@@ -3,15 +3,31 @@
 @tailwind utilities;
 
 :root {
+  /* Default Branding Colors */
+  --amber: #e8a020;
+  --amber-dim: #a06d10;
+}
+
+/* Dark Theme (Default) */
+[data-theme='dark'], :root:not([data-theme='light']) {
   --ink: #0c0c0b;
   --chalk: #f0ece4;
   --mist: #d6d1c7;
-  --amber: #e8a020;
-  --amber-dim: #a06d10;
   --surface: #161613;
   --surface2: #1e1d1a;
   --border: #2a2925;
   --border2: #3a3832;
+}
+
+/* Light Theme */
+[data-theme='light'] {
+  --ink: #fafaf9;
+  --chalk: #121211;
+  --mist: #57534e;
+  --surface: #f5f5f4;
+  --surface2: #e7e5e4;
+  --border: #d6d3d1;
+  --border2: #a8a29e;
 }
 
 @layer base {

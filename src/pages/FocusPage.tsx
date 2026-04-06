@@ -45,7 +45,7 @@ export default function FocusPage() {
   };
 
   const handleConfirmEndSession = async (notes: string) => {
-    if (!activeSession) return;
+    if (!activeSession || !user) return;
     
     try {
       const endedAt = new Date().toISOString();
@@ -57,8 +57,16 @@ export default function FocusPage() {
         notes,
       });
       
-      // Fallback: If no trigger exists, manually create log entry
-      // focusApi.createLogEntry({ ... });
+      // Auto-create log entry for the Ship Log
+      await focusApi.createLogEntry({
+        user_id: user.id,
+        project_id: activeSession.projectId,
+        session_id: activeSession.id,
+        date: endedAt.split("T")[0],
+        description: notes || `Focus Session: ${activeSession.title}`,
+        duration_mins: durationMins,
+        tags: ["focus"],
+      });
 
       setActiveSession(null);
       resetTimer();

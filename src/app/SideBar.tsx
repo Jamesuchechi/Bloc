@@ -9,7 +9,8 @@ import {
   LogOut,
   Bell,
   Layers,
-  Ship
+  Ship,
+  Users
 } from "lucide-react";
 import { cn } from "../lib/utils";
 import { useAppStore } from "../store/appStore";
@@ -70,6 +71,7 @@ export function SideBar() {
     { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, path: "/dashboard" },
     { id: "focus", label: "Focus Timer", icon: Timer, path: "/focus" },
     { id: "log", label: "Ship Log", icon: Ship, path: "/log" },
+    { id: "clients", label: "Clients", icon: Users, path: "/clients" },
     { id: "modules", label: "Modules", icon: Layers, path: "/modules" },
     { id: "settings", label: "Settings", icon: Settings, path: "/settings" },
   ];

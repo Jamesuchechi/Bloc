@@ -11,14 +11,20 @@ import FocusPage from "../pages/FocusPage";
 import VerifyEmail from "../pages/auth/VerifyEmail";
 import ShipLogPage from "../pages/ShipLogPage";
 import PublicSummaryPage from "../pages/PublicSummaryPage";
+import ClientsPage from "../pages/ClientsPage";
+import ClientDetail from "../pages/ClientDetail";
+import PublicPortalPage from "../pages/PublicPortalPage";
 import { PlaceholderPage } from "../pages/PlaceholderPage";
 import { Timer, Layers, Settings, FileText, Users, ClipboardList } from "lucide-react";
 import { Toaster } from "react-hot-toast";
 import { useAuth } from "../hooks/useAuth";
 
 import { AuthInitializer } from "../components/auth/AuthInitializer";
+import { useSupabaseRealtime } from "../hooks/useSupabaseRealtime";
 
 export default function App() {
+  useSupabaseRealtime();
+  
   return (
     <>
       <AuthInitializer />
@@ -38,7 +44,8 @@ export default function App() {
         <Route path="/login" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/verify-email" element={<VerifyEmail />} />
-      <Route path="/summary" element={<PublicSummaryPage />} />
+        <Route path="/summary" element={<PublicSummaryPage />} />
+        <Route path="/portal/:token" element={<PublicPortalPage />} />
         
         {/* Protected App Routes */}
         <Route element={<AuthGuard />}>
@@ -51,10 +58,8 @@ export default function App() {
               element={<PlaceholderPage title="Modules" description="Manage and enable additional BLOC modules." icon={Layers} />} 
             />
             <Route path="/log" element={<ShipLogPage />} />
-            <Route 
-              path="/clients" 
-              element={<PlaceholderPage title="Clients" description="Manage your client relationships and portals." icon={Users} />} 
-            />
+            <Route path="/clients" element={<ClientsPage />} />
+            <Route path="/clients/:id" element={<ClientDetail />} />
             <Route 
               path="/proposals" 
               element={<PlaceholderPage title="Proposals" description="Build and send professional project proposals." icon={ClipboardList} />} 

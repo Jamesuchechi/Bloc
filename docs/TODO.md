@@ -7,9 +7,9 @@
 
 ## Current Status
 
-**Phase:** 3 — Ship Log
-**Started:** 2026-04-05
-**Target MVP:** Phase 3 complete
+**Phase:** 5 — Proposal Builder Module
+**Started:** 2026-04-06
+**Target MVP:** Phase 5 start
 
 ---
 
@@ -94,60 +94,60 @@
 
 ---
 
-## Phase 3 — Ship Log Module
+## Phase 3 — Ship Log Module ✅
 *The record of everything you've built.*
 
 ### Log Entry
-- [ ] Auto-create entry when Focus session ends
-- [ ] Manual entry creation
-- [ ] Entry fields: date, project, description, duration, tags
-- [ ] Markdown support in description field
-- [ ] Edit and delete entries
+- [x] Auto-create entry when Focus session ends
+- [x] Manual entry creation
+- [x] Entry fields: date, project, description, duration, tags
+- [x] Markdown support in description field
+- [x] Edit and delete entries
 
 ### Log Views
-- [ ] Default: chronological list view
-- [ ] Group by project
-- [ ] Filter by date range
-- [ ] Filter by project
-- [ ] Search entries by keyword
+- [x] Default: chronological list view
+- [x] Group by project
+- [x] Filter by date range
+- [x] Filter by project
+- [x] Search entries by keyword
 
 ### Weekly Summary
-- [ ] Auto-generate weekly summary (Mon–Sun)
-- [ ] Summary includes: total hours, entries by project, highlights
-- [ ] Copy summary as plain text
-- [ ] Share summary via public link (read-only page)
-- [ ] Send summary via email to a client
+- [x] Auto-generate weekly summary (Mon–Sun)
+- [x] Summary includes: total hours, entries by project, highlights
+- [x] Copy summary as plain text
+- [x] Share summary via public link (read-only page)
+- [x] Send summary via email to a client
 
 ---
 
-## Phase 4 — Client Portal Module
+## Phase 4 — Client Portal Module ✅
 *Your clients' window into your work.*
 
 ### Client Management
-- [ ] Create client (name, email, company, color/avatar)
-- [ ] Edit and archive clients
-- [ ] Assign projects to clients
-- [ ] Client list view
+- [x] Create client (name, email, company, color/avatar)
+- [x] Edit and archive clients
+- [x] Assign projects to clients
+- [x] Client list view
 
 ### Portal Page (Builder View)
-- [ ] Portal dashboard per client
-- [ ] List of projects and their status
-- [ ] Add manual updates (text, optional file attachment)
-- [ ] Ship Log entries can be "pushed" to portal as updates
-- [ ] Deliverables list with status: pending / in review / approved
-- [ ] Upload deliverable files
+- [x] Portal dashboard per client
+- [x] List of projects and their status
+- [x] Add manual updates (text, optional file attachment)
+- [x] Ship Log entries can be "pushed" to portal as updates
+- [x] Deliverables list with status: pending / in review / approved
+- [x] Upload deliverable files
 
 ### Portal Page (Client View — Public)
-- [ ] Unique shareable URL per client (`/portal/[token]`)
-- [ ] Optional password protection
-- [ ] Client sees: projects, updates feed, deliverables
-- [ ] Client can leave comments on updates
-- [ ] Client can mark deliverables as "Approved"
-- [ ] Email notification to builder when client approves or comments
+- [x] Unique shareable URL per client (`/portal/[token]`)
+- [x] Optional password protection
+- [x] Client sees: projects, updates feed, deliverables
+- [x] Client can leave comments on updates
+- [x] Client can mark deliverables as "Approved"
+- [x] Email notification to builder when client approves or comments
 
 ### Portal Branding
-- [ ] Builder can set their name/logo on portal
-- [ ] Accent color customization per portal
+- [x] Builder can set their name/logo on portal
+- [x] Accent color customization per portal
 
 ---
 

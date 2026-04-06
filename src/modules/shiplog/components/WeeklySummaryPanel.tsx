@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { format, startOfWeek, endOfWeek, subDays } from "date-fns";
 import { TrendingUp, Copy, Share2, Mail, ExternalLink, Award, Plus, CheckCircle2 } from "lucide-react";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 import { Button } from "@/components/ui/Button";
 import { shiplogApi } from "../api";
 import { useAuth } from "@/hooks/useAuth";
@@ -38,6 +39,14 @@ export const WeeklySummaryPanel: React.FC = () => {
     acc[name] = (acc[name] || 0) + (curr.duration_mins || 0);
     return acc;
   }, {});
+
+  const chartData = Object.entries(projectStats).map(([name, mins]: any) => ({
+    name: name.length > 15 ? name.substring(0, 15) + '...' : name,
+    hours: Number((mins / 60).toFixed(1)),
+    fullProjectName: name
+  })).sort((a, b) => b.hours - a.hours);
+
+  const CHAT_COLORS = ['#e8a020', '#f5b544', '#d68f1c', '#c27e16', '#fcd386'];
 
   const generateSummaryText = () => {
     let summary = `🚢 Weekly Ship Log Summary (${format(weekStart, "MMM d")} - ${format(weekEnd, "MMM d")})\n\n`;
@@ -106,23 +115,34 @@ export const WeeklySummaryPanel: React.FC = () => {
       </div>
 
       {/* Project Breakdown */}
-      <div className="space-y-4 mb-10">
+      <div className="space-y-4 mb-10 w-full">
         <h4 className="text-[10px] font-bold text-mist/60 uppercase tracking-[0.2em]">Project Distribution</h4>
-        {Object.entries(projectStats).length > 0 ? (
-          Object.entries(projectStats).map(([name, mins]: any) => (
-            <div key={name} className="space-y-1.5">
-              <div className="flex justify-between text-xs font-semibold">
-                <span className="text-chalk">{name}</span>
-                <span className="text-mist">{(mins / 60).toFixed(1)}h</span>
-              </div>
-              <div className="h-1.5 w-full bg-ink/60 rounded-full overflow-hidden">
-                <div 
-                  className="h-full bg-amber shadow-[0_0_10px_rgba(232,160,32,0.3)] transition-all duration-500" 
-                  style={{ width: `${(mins / totalMins) * 100}%` }}
+        {chartData.length > 0 ? (
+          <div className="h-[200px] w-full mt-4 -ml-4 pr-4">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={chartData} layout="vertical" margin={{ top: 0, right: 0, bottom: 0, left: 0 }}>
+                <XAxis type="number" hide />
+                <YAxis 
+                  dataKey="name" 
+                  type="category" 
+                  axisLine={false} 
+                  tickLine={false} 
+                  tick={{ fill: '#a1a1aa', fontSize: 11, fontWeight: 500 }}
+                  width={110}
                 />
-              </div>
-            </div>
-          ))
+                <Tooltip 
+                  cursor={{ fill: '#27272a', opacity: 0.4 }}
+                  contentStyle={{ backgroundColor: '#18181b', border: '1px solid #27272a', borderRadius: '12px', fontSize: '12px', color: '#e4e4e7' }}
+                  itemStyle={{ color: '#e8a020', fontWeight: 'bold' }}
+                />
+                <Bar dataKey="hours" radius={[0, 4, 4, 0]} barSize={20}>
+                  {chartData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={CHAT_COLORS[index % CHAT_COLORS.length]} />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
         ) : (
           <p className="text-xs text-mist italic">No project data for this week.</p>
         )}
@@ -154,6 +174,11 @@ export const WeeklySummaryPanel: React.FC = () => {
         </Button>
         <Button 
           variant="ghost" 
+          onClick={() => {
+            const subject = encodeURIComponent(`Weekly Update: ${format(weekStart, "MMM d")} - ${format(weekEnd, "MMM d")}`);
+            const body = encodeURIComponent(generateSummaryText());
+            window.location.href = `mailto:?subject=${subject}&body=${body}`;
+          }}
           className="w-full justify-start gap-3 text-mist/70 hover:text-amber"
         >
           <Mail className="h-4 w-4" />

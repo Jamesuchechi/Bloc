@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Search, Filter, Calendar, X, Plus } from "lucide-react";
+import { Search, Filter, Calendar, X, Plus, Download } from "lucide-react";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { focusApi, Project } from "@/modules/focus/api";
 import { useShipLogStore } from "@/store/shipLogStore";
+import { downloadLogsAsCSV } from "@/lib/exportUtils";
 import { useAuth } from "@/hooks/useAuth";
 
 interface LogFilterBarProps {
@@ -12,7 +13,7 @@ interface LogFilterBarProps {
 
 export const LogFilterBar: React.FC<LogFilterBarProps> = ({ onAddEntry }) => {
   const { user } = useAuth();
-  const { filters, setFilters } = useShipLogStore();
+  const { filters, setFilters, entries } = useShipLogStore();
   const [projects, setProjects] = useState<Project[]>([]);
   const [searchValue, setSearchValue] = useState(filters.search);
 
@@ -86,14 +87,24 @@ export const LogFilterBar: React.FC<LogFilterBarProps> = ({ onAddEntry }) => {
 
       <div className="flex-1" />
 
-      {/* Action Button */}
-      <Button 
-        onClick={onAddEntry}
-        className="w-full md:w-auto h-11 bg-amber hover:bg-amber/90 text-ink font-bold gap-2 px-6 shadow-lg shadow-amber/10"
-      >
-        <Plus className="h-5 w-5" />
-        Ship Log Entry
-      </Button>
+      {/* Action Buttons */}
+      <div className="flex items-center gap-3 w-full md:w-auto mt-4 md:mt-0">
+        <Button 
+          variant="outline"
+          onClick={() => downloadLogsAsCSV(entries)}
+          className="h-11 px-4 border-border/30 hover:bg-surface2 hover:text-amber transition-all shadow-sm"
+          title="Export as CSV"
+        >
+          <Download className="h-5 w-5" />
+        </Button>
+        <Button 
+          onClick={onAddEntry}
+          className="w-full md:w-auto h-11 bg-amber hover:bg-amber/90 text-ink font-bold gap-2 px-6 shadow-lg shadow-amber/10"
+        >
+          <Plus className="h-5 w-5" />
+          Ship Log Entry
+        </Button>
+      </div>
     </div>
   );
 };

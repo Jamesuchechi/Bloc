@@ -178,7 +178,7 @@ export default function Dashboard() {
         <Card className="lg:col-span-2 bg-surface/20 border-border/10 backdrop-blur-3xl overflow-hidden shadow-2xl">
           <CardHeader className="flex flex-row items-center justify-between border-b border-border/5 pb-8 mb-4">
             <div>
-              <CardTitle className="text-2xl font-black tracking-tight flex items-center gap-3 uppercase tracking-widest text-[14px]">
+              <CardTitle className="text-2xl font-black flex items-center gap-3 uppercase tracking-widest text-[14px]">
                 <TrendingUp className="h-5 w-5 text-amber" /> Focus Distribution
               </CardTitle>
               <CardDescription className="text-mist/60 mt-1 font-medium">Daily productivity hours stacked by project context.</CardDescription>

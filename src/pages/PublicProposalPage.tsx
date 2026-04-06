@@ -4,6 +4,7 @@ import { Printer, CheckCircle, Clock, ShieldCheck, ChevronRight } from "lucide-r
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Proposal, ProposalService, proposalApi } from "@/modules/proposals/api";
+import { notificationsApi } from "@/modules/notifications/api";
 import { Client } from "@/modules/portal/api";
 import { supabase } from "@/lib/supabase";
 import { toast } from "react-hot-toast";
@@ -59,6 +60,16 @@ export default function PublicProposalPage() {
     setIsSigning(true);
     try {
       await proposalApi.signProposal(proposal.id, signedName);
+      
+      // Notify the builder
+      await notificationsApi.createNotification({
+        user_id: proposal.user_id,
+        type: 'proposal_signed',
+        title: 'Proposal Signed! ✍️',
+        message: `${signedName} has just signed the proposal: "${proposal.title}"`,
+        link: `/proposals/${proposal.id}`
+      });
+
       setProposal({ ...proposal, status: 'signed', signed_name: signedName, signed_at: new Date().toISOString() });
       toast.success("Proposal successfully signed and accepted!");
     } catch (e: any) {

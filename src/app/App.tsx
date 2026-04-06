@@ -18,6 +18,7 @@ import ProposalsPage from "../pages/ProposalsPage";
 import ProposalBuilder from "../pages/ProposalBuilder";
 import PublicProposalPage from "../pages/PublicProposalPage";
 import IntegrationsPage from "../pages/IntegrationsPage";
+import AnalyticsPage from "../pages/AnalyticsPage";
 import { PlaceholderPage } from "../pages/PlaceholderPage";
 import { Timer, Layers, Settings, FileText, Users, ClipboardList } from "lucide-react";
 import { Toaster } from "react-hot-toast";
@@ -64,6 +65,7 @@ export default function App() {
             <Route path="/clients/:id" element={<ClientDetail />} />
             <Route path="/proposals" element={<ProposalsPage />} />
             <Route path="/proposals/:id" element={<ProposalBuilder />} />
+            <Route path="/analytics" element={<AnalyticsPage />} />
             <Route 
               path="/settings"  
               element={<PlaceholderPage title="Settings" description="Customize your BLOC experience and sector preferences." icon={Settings} />} 

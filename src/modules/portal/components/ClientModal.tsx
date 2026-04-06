@@ -58,7 +58,7 @@ export const ClientModal: React.FC<ClientModalProps> = ({ isOpen, onClose, clien
         company: company || null,
         email: email || null,
         color,
-        ...(password ? { portal_password_hash: password } : {}) // Simple save for MVP
+        ...(password ? { portal_password_hash: password } : {})
       };
 
       if (client) {

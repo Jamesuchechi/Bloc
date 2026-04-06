@@ -2,9 +2,21 @@ import { useAppStore } from "../../store/appStore";
 import { Badge } from "../ui/Badge";
 import { Button } from "../ui/Button";
 import { Search, Bell, User as UserIcon, Menu, X } from "lucide-react";
+import { useState, useEffect } from "react";
+import { useNotificationStore } from "../../store/notificationStore";
+import { NotificationPanel } from "./NotificationPanel";
 
 export function TopBar() {
   const { activeModule, user, mobileMenuOpen, toggleMobileMenu } = useAppStore();
+  const { unreadCount, fetchNotifications, subscribeToNotifications } = useNotificationStore();
+  const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+
+  useEffect(() => {
+    if (user) {
+      fetchNotifications(user.id);
+      return subscribeToNotifications(user.id);
+    }
+  }, [user, fetchNotifications, subscribeToNotifications]);
 
   const moduleTitles: Record<string, string> = {
     focus: "Focus Timer",
@@ -40,10 +52,23 @@ export function TopBar() {
           <Button variant="ghost" size="icon" className="h-9 w-9 text-mist hover:text-chalk">
             <Search className="h-5 w-5" />
           </Button>
-          <Button variant="ghost" size="icon" className="h-9 w-9 text-mist hover:text-chalk relative">
-            <Bell className="h-5 w-5" />
-            <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-amber shadow-[0_0_8px_rgba(232,160,32,0.6)]" />
-          </Button>
+          <div className="relative">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className={`h-9 w-9 transition-colors ${isNotificationsOpen ? 'text-amber bg-white/5' : 'text-mist hover:text-chalk'}`}
+              onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}
+            >
+              <Bell className="h-5 w-5" />
+              {unreadCount > 0 && (
+                <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-amber shadow-[0_0_8px_rgba(232,160,32,0.8)] animate-pulse" />
+              )}
+            </Button>
+            <NotificationPanel 
+              isOpen={isNotificationsOpen} 
+              onClose={() => setIsNotificationsOpen(false)} 
+            />
+          </div>
         </div>
 
         <div className="h-6 w-px bg-border mx-2" />

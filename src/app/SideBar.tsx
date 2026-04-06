@@ -12,10 +12,12 @@ import {
   Ship,
   Users,
   ClipboardList,
-  Puzzle
+  Puzzle,
+  BarChart3
 } from "lucide-react";
 import { cn } from "../lib/utils";
 import { useAppStore } from "../store/appStore";
+import { useNotificationStore } from "../store/notificationStore";
 import { Button } from "../components/ui/Button";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
@@ -26,6 +28,7 @@ interface NavItemProps {
   id: string;
   isActive: boolean;
   isCollapsed: boolean;
+  badge?: number;
   onClick: () => void;
 }
 
@@ -34,6 +37,7 @@ const NavItem = ({
   label, 
   isActive, 
   isCollapsed, 
+  badge,
   onClick 
 }: NavItemProps) => (
   <button
@@ -47,9 +51,17 @@ const NavItem = ({
   >
     <Icon className={cn("h-5 w-5 shrink-0", isActive ? "text-ink" : "text-amber group-hover:scale-110 transition-transform")} />
     {!isCollapsed && (
-      <span className="text-sm font-medium tracking-wide">
+      <span className="text-sm font-medium tracking-wide flex-1 text-left">
         {label}
       </span>
+    )}
+    {!isCollapsed && badge !== undefined && badge > 0 && (
+      <span className="h-5 min-w-[20px] px-1 rounded-full bg-ink text-white text-[10px] flex items-center justify-center font-bold">
+        {badge}
+      </span>
+    )}
+    {isCollapsed && badge !== undefined && badge > 0 && (
+      <span className="absolute top-1 right-1 h-3 w-3 rounded-full bg-ink border-2 border-amber" />
     )}
     {isCollapsed && isActive && (
       <div className="absolute left-0 top-1/2 -translate-y-1/2 h-6 w-1 bg-ink rounded-r-full" />
@@ -65,9 +77,11 @@ export function SideBar() {
     sidebarCollapsed, 
     mobileMenuOpen,
     toggleSidebar, 
+    activeModule,
     setActiveModule,
     setMobileMenuOpen
   } = useAppStore();
+  const { unreadCount } = useNotificationStore();
 
   const navItems = [
     { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, path: "/dashboard" },
@@ -75,6 +89,7 @@ export function SideBar() {
     { id: "log", label: "Ship Log", icon: Ship, path: "/log" },
     { id: "clients", label: "Clients", icon: Users, path: "/clients" },
     { id: "proposals", label: "Proposals", icon: ClipboardList, path: "/proposals" },
+    { id: "analytics", label: "Analytics", icon: BarChart3, path: "/analytics" },
     { id: "integrations", label: "Integrations", icon: Puzzle, path: "/integrations" },
     { id: "settings", label: "Settings", icon: Settings, path: "/settings" },
   ];
@@ -136,9 +151,10 @@ export function SideBar() {
           id="notifications"
           label="Notifications"
           icon={Bell}
-          isActive={false}
+          badge={unreadCount}
+          isActive={activeModule === "notifications"}
           isCollapsed={sidebarCollapsed && (typeof window !== 'undefined' && window.innerWidth >= 768)}
-          onClick={() => {}}
+          onClick={() => setActiveModule("notifications")}
         />
         
         <Button

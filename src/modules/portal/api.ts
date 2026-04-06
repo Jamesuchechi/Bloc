@@ -184,8 +184,14 @@ export const portalApi = {
     if (error && error.code !== "PGRST116") throw new Error(error.message); // PGRST116 is not found
     return data;
   },
-  
-  // Note: Password verification usually happens server-side, 
-  // but for MVP we might hash on client or just compare loosely if using a custom hash. 
-  // Ideally, portal passwords should be matched using pg_crypto or similar, but for now we just fetch.
+
+  async verifyPortalPassword(token: string, password: string): Promise<boolean> {
+    const { data, error } = await supabase.rpc('verify_portal_password', {
+      p_token: token,
+      p_password: password
+    });
+    
+    if (error) throw new Error(error.message);
+    return !!data;
+  },
 };

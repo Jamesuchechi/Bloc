@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useFocusStore } from "@/store/focusStore";
 import { useAppStore } from "@/store/appStore";
 import { focusApi } from "@/modules/focus/api";
+import { notificationsApi } from "@/modules/notifications/api";
 import { SessionSetup } from "@/modules/focus/components/SessionSetup";
 import { ActiveSession } from "@/modules/focus/components/ActiveSession";
 import { SessionHistory } from "@/modules/focus/components/SessionHistory";
@@ -66,6 +67,14 @@ export default function FocusPage() {
         description: notes || `Focus Session: ${activeSession.title}`,
         duration_mins: durationMins,
         tags: ["focus"],
+      });
+
+      // Notification
+      await notificationsApi.createNotification({
+        user_id: user.id,
+        type: 'info',
+        title: 'Focus Goal Reached! 🚀',
+        message: `You just finished a ${durationMins}m session: "${activeSession.title}"`,
       });
 
       setActiveSession(null);

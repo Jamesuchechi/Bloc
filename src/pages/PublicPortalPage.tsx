@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import { CheckCircle2, ChevronRight, FileCheck2, Activity, ShieldCheck, Download } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Client, Deliverable, PortalUpdate, portalApi } from "@/modules/portal/api";
+import { notificationsApi } from "@/modules/notifications/api";
 import { Project } from "@/modules/focus/api";
 import { PublicPortalAuth } from "./PublicPortalAuth";
 import { toast } from "react-hot-toast";
@@ -65,19 +66,41 @@ export default function PublicPortalPage() {
     }
   }, [isAuthenticated, client]);
 
-  const handleAuthenticate = (password: string) => {
-    // MVP: direct match for hashed string mimicking (in a real app, hash and compare or hit a secure API route)
-    if (client?.portal_password_hash === password) {
-      setIsAuthenticated(true);
-      setAuthError(null);
-    } else {
-      setAuthError("Incorrect password");
+  const [isVerifying, setIsVerifying] = useState(false);
+
+  const handleAuthenticate = async (password: string) => {
+    if (!token) return;
+    setIsVerifying(true);
+    try {
+      const isValid = await portalApi.verifyPortalPassword(token, password);
+      if (isValid) {
+        setIsAuthenticated(true);
+        setAuthError(null);
+      } else {
+        setAuthError("Incorrect password");
+      }
+    } catch (e: any) {
+      toast.error("Verification failed. Please try again.");
+    } finally {
+      setIsVerifying(false);
     }
   };
 
   const markApproved = async (d: Deliverable) => {
     try {
       await portalApi.updateDeliverableStatus(d.id, 'approved');
+      
+      // Notify the builder
+      if (client) {
+        await notificationsApi.createNotification({
+          user_id: client.user_id,
+          type: 'deliverable_approved',
+          title: 'Deliverable Approved! ✅',
+          message: `${client.name} has approved: "${d.title}"`,
+          link: `/clients/${client.id}`
+        });
+      }
+
       setDeliverables(prev => prev.map(item => item.id === d.id ? { ...item, status: 'approved', approved_at: new Date().toISOString() } : item));
       toast.success("Deliverable approved!");
     } catch (e: any) {

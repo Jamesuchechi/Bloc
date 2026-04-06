@@ -52,7 +52,7 @@ export function AppLayout() {
   }, [location.pathname]);
 
   return (
-    <div className="flex bg-ink min-h-screen text-chalk font-sora antialiased overflow-hidden relative">
+    <div className="flex bg-ink min-h-screen text-chalk font-sora antialiased relative">
       <SideBar />
       <GlobalSearch />
       
@@ -64,7 +64,7 @@ export function AppLayout() {
         />
       )}
 
-      <div className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
+      <div className="flex-1 flex flex-col min-w-0 h-screen">
         <TopBar />
         <main className="flex-1 overflow-y-auto p-4 md:p-8 lg:p-10 custom-scrollbar">
           <div className="max-w-6xl mx-auto h-full">

@@ -148,7 +148,7 @@ export default function AIChatPage() {
   };
 
   return (
-    <div className="flex h-[calc(100vh-140px)] -m-4 md:-m-8 bg-ink overflow-hidden border border-border/10 rounded-3xl shadow-2xl relative">
+    <div className="flex h-[calc(100vh-140px)] -m-4 md:-m-8 bg-ink border border-border/10 rounded-3xl shadow-2xl relative">
       
       {/* Background Accents */}
       <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-amber/5 blur-[120px] rounded-full pointer-events-none" />
@@ -212,7 +212,7 @@ export default function AIChatPage() {
       <div className="flex-1 flex flex-col min-w-0 bg-ink/40 backdrop-blur-xl z-10 relative">
         
         {/* Header - Model Selector */}
-        <div className="h-20 border-b border-border/10 flex items-center justify-between px-8 bg-surface/10">
+        <div className="h-20 border-b border-border/10 flex items-center justify-between px-8 bg-surface/10 rounded-t-3xl">
            <div className="flex items-center gap-4">
               <div className="p-2 bg-amber/10 rounded-xl">
                  <Bot className="h-5 w-5 text-amber" />

@@ -3,6 +3,7 @@ import { Timer, Play, Plus } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Card } from "@/components/ui/Card";
+import { motion } from "framer-motion";
 import { focusApi, Project } from "../api";
 import { useAuth } from "@/hooks/useAuth";
 import { useFocusStore } from "@/store/focusStore";
@@ -36,50 +37,54 @@ export const SessionSetup: React.FC<SessionSetupProps> = ({ onStart }) => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-      <div className="text-center space-y-2">
-        <h1 className="text-4xl font-bold tracking-tight text-white">Focus.</h1>
-        <p className="text-zinc-400">What are you building today?</p>
-      </div>
-
-      <Card className="bg-zinc-900/50 border-zinc-800 p-8">
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-zinc-400">Current Focus</label>
+    <div className="w-full space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <Card className="bg-surface/30 border-border/10 backdrop-blur-xl p-8 rounded-3xl shadow-2xl relative overflow-hidden group">
+        <div className="absolute top-0 right-0 w-32 h-32 bg-amber/5 blur-3xl rounded-full -mr-16 -mt-16 group-hover:bg-amber/10 transition-colors" />
+        
+        <form onSubmit={handleSubmit} className="space-y-10 relative z-10">
+          <div className="space-y-3">
+            <label className="text-[10px] font-black text-mist/40 uppercase tracking-[0.2em] ml-1">Current Focus</label>
             <Input
-              placeholder="Designing the dashboard icons..."
+              placeholder="What are you building today?"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="text-lg py-6"
+              className="text-xl py-8 bg-surface/50 border-border/10 rounded-2xl focus:border-amber/50 focus:ring-amber/20 transition-all font-bold placeholder:text-mist/20"
               autoFocus
             />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-zinc-400">Project (Optional)</label>
-              <select
-                value={projectId}
-                onChange={(e) => setProjectId(e.target.value)}
-                className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-orange-500/50 transition-all"
-              >
-                <option value="">No Project</option>
-                {projects.map((p) => (
-                  <option key={p.id} value={p.id}>
-                    {p.name}
-                  </option>
-                ))}
-              </select>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="space-y-3">
+              <label className="text-[10px] font-black text-mist/40 uppercase tracking-[0.2em] ml-1">Project Context</label>
+              <div className="relative group/select">
+                <select
+                  value={projectId}
+                  onChange={(e) => setProjectId(e.target.value)}
+                  className="w-full bg-surface/50 border border-border/10 rounded-2xl px-5 py-4 text-sm font-bold text-chalk outline-none focus:border-amber/50 focus:ring-2 focus:ring-amber/10 transition-all appearance-none cursor-pointer"
+                >
+                  <option value="" className="bg-ink">General / Internal</option>
+                  {projects.map((p) => (
+                    <option key={p.id} value={p.id} className="bg-ink">
+                      {p.name}
+                    </option>
+                  ))}
+                </select>
+                <div className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-mist/40 group-hover/select:text-amber transition-colors">
+                  <Plus className="h-4 w-4" />
+                </div>
+              </div>
             </div>
 
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-zinc-400">Mode</label>
-              <div className="flex bg-zinc-950 p-1 rounded-lg border border-zinc-800">
+            <div className="space-y-3">
+              <label className="text-[10px] font-black text-mist/40 uppercase tracking-[0.2em] ml-1">Timer Mode</label>
+              <div className="flex bg-surface/50 p-1.5 rounded-2xl border border-border/10 h-[54px]">
                 <button
                   type="button"
                   onClick={() => setTimerMode("stopwatch")}
-                  className={`flex-1 py-1.5 text-xs font-medium rounded-md transition-all ${
-                    timerMode === "stopwatch" ? "bg-zinc-800 text-white shadow-sm" : "text-zinc-500 hover:text-zinc-300"
+                  className={`flex-1 flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all ${
+                    timerMode === "stopwatch" 
+                      ? "bg-amber text-ink shadow-lg shadow-amber/20" 
+                      : "text-mist/40 hover:text-mist hover:bg-surface"
                   }`}
                 >
                   Stopwatch
@@ -87,8 +92,10 @@ export const SessionSetup: React.FC<SessionSetupProps> = ({ onStart }) => {
                 <button
                   type="button"
                   onClick={() => setTimerMode("countdown")}
-                  className={`flex-1 py-1.5 text-xs font-medium rounded-md transition-all ${
-                    timerMode === "countdown" ? "bg-zinc-800 text-white shadow-sm" : "text-zinc-500 hover:text-zinc-300"
+                  className={`flex-1 flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all ${
+                    timerMode === "countdown" 
+                      ? "bg-amber text-ink shadow-lg shadow-amber/20" 
+                      : "text-mist/40 hover:text-mist hover:bg-surface"
                   }`}
                 >
                   Pomodoro
@@ -98,37 +105,52 @@ export const SessionSetup: React.FC<SessionSetupProps> = ({ onStart }) => {
           </div>
 
           {timerMode === "countdown" && (
-            <div className="flex items-center justify-between p-4 bg-orange-500/5 border border-orange-500/10 rounded-xl animate-in zoom-in-95 duration-300">
-              <span className="text-sm text-orange-200/70 font-medium">Session Duration</span>
-              <div className="flex items-center gap-4">
-                {[15, 25, 45, 60].map((mins) => (
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="flex flex-col md:flex-row md:items-center justify-between p-6 bg-amber/5 border border-amber/10 rounded-2xl gap-4"
+            >
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-amber/10 rounded-lg">
+                   <Timer className="h-4 w-4 text-amber" />
+                </div>
+                <span className="text-xs text-amber font-black uppercase tracking-widest">Session Block</span>
+              </div>
+              <div className="flex items-center gap-3">
+                {[15, 25, 45, 60, 90].map((mins) => (
                   <button
                     key={mins}
                     type="button"
                     onClick={() => setCountdownDuration(mins)}
-                    className={`w-10 h-10 rounded-full border text-xs font-bold transition-all ${
+                    className={`h-11 px-4 rounded-xl border text-[10px] font-black transition-all ${
                       countdownDuration === mins
-                        ? "bg-orange-500 border-orange-400 text-white shadow-[0_0_15px_rgba(249,115,22,0.4)]"
-                        : "bg-zinc-950 border-zinc-800 text-zinc-400 hover:border-zinc-700"
+                        ? "bg-amber border-amber/40 text-ink shadow-xl shadow-amber/10"
+                        : "bg-surface/50 border-border/10 text-mist/40 hover:text-mist hover:border-border/40"
                     }`}
                   >
-                    {mins}
+                    {mins}M
                   </button>
                 ))}
               </div>
-            </div>
+            </motion.div>
           )}
 
           <Button
             type="submit"
-            className="w-full py-7 text-lg font-bold bg-orange-500 hover:bg-orange-600 shadow-[0_0_20px_rgba(249,115,22,0.2)]"
+            className="w-full h-16 text-xs font-black uppercase tracking-[0.3em] bg-amber text-ink hover:bg-white transition-all shadow-2xl shadow-amber/20 active:scale-[0.98]"
             disabled={!title.trim()}
           >
-            <Play className="w-5 h-5 mr-2 fill-current" />
-            Launch Session
+            <Play className="w-4 h-4 mr-3 fill-current" />
+            Initiate Protocol
           </Button>
         </form>
       </Card>
+      
+      <div className="flex items-center justify-center gap-8 px-4 opacity-30 group-hover:opacity-100 transition-opacity">
+         <div className="h-px flex-1 bg-gradient-to-r from-transparent to-border/10" />
+         <span className="text-[8px] font-black uppercase tracking-[0.4em] text-mist/40">Neural Sync Active</span>
+         <div className="h-px flex-1 bg-gradient-to-l from-transparent to-border/10" />
+      </div>
     </div>
   );
 };

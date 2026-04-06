@@ -72,7 +72,7 @@ export function QuickThemeToggle({ minimal = false }: { minimal?: boolean }) {
                 initial={{ opacity: 0, scale: 0.9, y: 10 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.9, y: 10 }}
-                className="absolute right-0 top-full mt-2 bg-surface border border-border/20 rounded-2xl p-2 shadow-2xl z-50 flex flex-col gap-1 min-w-[140px]"
+                className="absolute right-0 lg:right-auto lg:left-0 top-full mt-2 bg-surface border border-border/20 rounded-2xl p-2 shadow-2xl z-[100] flex flex-col gap-1 min-w-[160px]"
               >
                 <p className="text-[9px] uppercase tracking-widest text-mist/40 font-black px-2 py-1">Accents</p>
                 {ACCENT_COLORS.map((c) => (

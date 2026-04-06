@@ -119,7 +119,7 @@ export function SideBar() {
           : 0
       }}
       className={cn(
-        "fixed inset-y-0 left-0 lg:relative flex h-screen flex-col border-r border-border bg-surface px-3 py-6 transition-colors duration-300 overflow-hidden shadow-xl z-50",
+        "fixed inset-y-0 left-0 lg:relative flex h-screen flex-col border-r border-border bg-surface px-3 py-6 transition-colors duration-300 overflow-y-auto overflow-x-visible shadow-xl z-50",
         sidebarCollapsed ? "lg:items-center" : "lg:items-stretch"
       )}
     >

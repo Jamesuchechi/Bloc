@@ -7,17 +7,17 @@ export default {
   theme: {
     extend: {
       colors: {
-        ink: "#0c0c0b",
-        chalk: "#f0ece4",
-        mist: "#d6d1c7",
+        ink: "var(--ink)",
+        chalk: "var(--chalk)",
+        mist: "var(--mist)",
         amber: {
-          DEFAULT: "#e8a020",
-          dim: "#a06d10",
+          DEFAULT: "var(--amber)",
+          dim: "var(--amber-dim)",
         },
-        surface: "#161613",
-        surface2: "#1e1d1a",
-        border: "#2a2925",
-        border2: "#3a3832",
+        surface: "var(--surface)",
+        surface2: "var(--surface2)",
+        border: "var(--border)",
+        border2: "var(--border2)",
       },
       fontFamily: {
         bebas: ["'Bebas Neue'", "cursive"],

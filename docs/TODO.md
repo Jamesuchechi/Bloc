@@ -192,8 +192,8 @@
 *Make the whole greater than the sum of its parts.*
 
 - [x] Dashboard home — today's session, recent log, client activity
-- [ ] Global search across sessions, log entries, clients, proposals
-- [ ] Keyboard shortcuts (cmd+K command palette)
+- [x] Global search across sessions, log entries, clients, proposals
+- [x] Keyboard shortcuts (cmd+K command palette)
 - [x] Notifications center (client approved, proposal signed, etc.)
 - [x] Dark mode support
 - [x] Mobile responsive layout

@@ -5,6 +5,7 @@ import { Search, Bell, User as UserIcon, Menu, X } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useNotificationStore } from "../../store/notificationStore";
 import { NotificationPanel } from "./NotificationPanel";
+import { QuickThemeToggle } from "./QuickThemeToggle";
 
 export function TopBar() {
   const { activeModule, user, mobileMenuOpen, toggleMobileMenu } = useAppStore();
@@ -50,7 +51,9 @@ export function TopBar() {
 
       {/* Global Actions & User Profile */}
       <div className="flex items-center gap-3">
-        <div className="hidden sm:flex items-center gap-1">
+        <div className="hidden sm:flex items-center gap-3">
+          <QuickThemeToggle />
+          
           <Button variant="ghost" size="icon" className="h-9 w-9 text-mist hover:text-chalk">
             <Search className="h-5 w-5" />
           </Button>

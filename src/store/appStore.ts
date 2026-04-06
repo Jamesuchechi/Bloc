@@ -36,7 +36,9 @@ interface AppState {
   notifications: Notification[];
   theme: 'light' | 'dark' | 'system';
   accentColor: string;
+  searchOpen: boolean;
 
+  setSearchOpen: (v: boolean) => void;
   setUser: (user: User | null) => void;
   setAuthLoading: (v: boolean) => void;
   setMobileMenuOpen: (v: boolean) => void;
@@ -60,7 +62,9 @@ export const useAppStore = create<AppState>()(
       notifications: [],
       theme: 'dark',
       accentColor: '#e8a020',
+      searchOpen: false,
 
+      setSearchOpen: (v) => set({ searchOpen: v }),
       setUser: (user) => set({ user, isAuthLoading: false }),
       setAuthLoading: (v) => set({ isAuthLoading: v }),
       setMobileMenuOpen: (v) => set({ mobileMenuOpen: v }),

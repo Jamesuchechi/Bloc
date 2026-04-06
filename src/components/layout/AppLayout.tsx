@@ -1,11 +1,19 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { SideBar } from "../../app/SideBar";
 import { TopBar } from "./TopBar";
 import { useAppStore } from "../../store/appStore";
 import { useEffect } from "react";
+import { GlobalSearch } from "./GlobalSearch";
 
 export function AppLayout() {
-  const { mobileMenuOpen, setMobileMenuOpen, theme, accentColor } = useAppStore();
+  const { 
+    mobileMenuOpen, 
+    setMobileMenuOpen, 
+    theme, 
+    accentColor,
+    setSearchOpen 
+  } = useAppStore();
+  const location = useLocation();
 
   useEffect(() => {
     // Apply Theme
@@ -24,9 +32,29 @@ export function AppLayout() {
     root.style.setProperty('--amber-dim', `${accentColor}4d`);
   }, [theme, accentColor]);
 
+  // Keyboard Shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault();
+        setSearchOpen(true);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [setSearchOpen]);
+
+  // Reset scroll on navigation
+  useEffect(() => {
+    const main = document.querySelector('main');
+    if (main) main.scrollTop = 0;
+  }, [location.pathname]);
+
   return (
     <div className="flex bg-ink min-h-screen text-chalk font-sora antialiased overflow-hidden relative">
       <SideBar />
+      <GlobalSearch />
       
       {/* Mobile Overlay */}
       {mobileMenuOpen && (

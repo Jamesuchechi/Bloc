@@ -13,7 +13,9 @@ import {
   Users,
   ClipboardList,
   Puzzle,
-  BarChart3
+  BarChart3,
+  Search,
+  Command
 } from "lucide-react";
 import { cn } from "../lib/utils";
 import { useAppStore } from "../store/appStore";
@@ -21,6 +23,7 @@ import { useNotificationStore } from "../store/notificationStore";
 import { Button } from "../components/ui/Button";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import { QuickThemeToggle } from "../components/layout/QuickThemeToggle";
 
 interface NavItemProps {
   icon: React.ElementType;
@@ -81,6 +84,7 @@ export function SideBar() {
     setActiveModule,
     setMobileMenuOpen
   } = useAppStore();
+  const setSearchOpen = useAppStore(s => s.setSearchOpen);
   const { unreadCount } = useNotificationStore();
 
   const navItems = [
@@ -134,6 +138,25 @@ export function SideBar() {
 
       {/* Navigation */}
       <nav className="flex flex-1 flex-col gap-2">
+        <button
+          onClick={() => setSearchOpen(true)}
+          className={cn(
+            "group relative flex items-center gap-3 rounded-lg px-3 py-2 transition-all duration-200",
+            "text-mist hover:bg-surface2 hover:text-chalk border border-transparent hover:border-amber/30 mb-2"
+          )}
+        >
+          <Search className="h-5 w-5 shrink-0 text-amber group-hover:scale-110 transition-transform" />
+          {!sidebarCollapsed && (
+            <div className="flex flex-1 items-center justify-between min-w-0">
+              <span className="text-sm font-medium tracking-wide truncate">Search...</span>
+              <div className="flex items-center gap-1 rounded border border-border bg-surface px-1.5 py-0.5 text-[10px] font-medium text-mist/50 group-hover:text-amber group-hover:border-amber/30 transition-colors">
+                <Command className="h-3 w-3" />
+                <span>K</span>
+              </div>
+            </div>
+          )}
+        </button>
+
         {navItems.map((item) => (
           <NavItem
             key={item.id}
@@ -156,6 +179,10 @@ export function SideBar() {
           isCollapsed={sidebarCollapsed && (typeof window !== 'undefined' && window.innerWidth >= 768)}
           onClick={() => handleNavClick("notifications", "/notifications")}
         />
+
+        <div className="px-2">
+          <QuickThemeToggle minimal={sidebarCollapsed && typeof window !== 'undefined' && window.innerWidth >= 768} />
+        </div>
         
         <Button
           variant="ghost"

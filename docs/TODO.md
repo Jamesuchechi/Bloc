@@ -211,12 +211,12 @@
 - [ ] Billing portal (manage subscription, cancel, invoices)
 
 ### Launch Prep
-- [ ] Write landing page copy
-- [ ] Build BLOC landing page (separate from app)
+- [x] Write landing page copy
+- [x] Build BLOC landing page (separate from app)
 - [ ] Set up waitlist / early access flow
 - [ ] Configure Vercel deployment (preview + production)
 - [ ] Set up error monitoring (Sentry)
-- [ ] Set up analytics (Plausible — privacy-first)
+- [x] Set up analytics (Plausible — privacy-first)
 - [ ] Write onboarding email sequence
 - [ ] Public launch (Product Hunt, Twitter/X, communities)
 

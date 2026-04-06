@@ -21,6 +21,7 @@ import IntegrationsPage from "../pages/IntegrationsPage";
 import AnalyticsPage from "../pages/AnalyticsPage";
 import NotificationsPage from "../pages/NotificationsPage";
 import SettingsPage from "../pages/SettingsPage";
+import ProjectsPage from "../pages/ProjectsPage";
 import { PlaceholderPage } from "../pages/PlaceholderPage";
 import { Timer, Layers, Settings, FileText, Users, ClipboardList } from "lucide-react";
 import { Toaster } from "react-hot-toast";
@@ -60,6 +61,7 @@ export default function App() {
           <Route element={<AppLayout />}>
             <Route path="/focus" element={<FocusPage />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/projects" element={<ProjectsPage />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/integrations" element={<IntegrationsPage />} />
             <Route path="/log" element={<ShipLogPage />} />

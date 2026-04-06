@@ -89,6 +89,7 @@ export function SideBar() {
 
   const navItems = [
     { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, path: "/dashboard" },
+    { id: "projects", label: "Projects", icon: Layers, path: "/projects" },
     { id: "focus", label: "Focus Timer", icon: Timer, path: "/focus" },
     { id: "log", label: "Ship Log", icon: Ship, path: "/log" },
     { id: "clients", label: "Clients", icon: Users, path: "/clients" },

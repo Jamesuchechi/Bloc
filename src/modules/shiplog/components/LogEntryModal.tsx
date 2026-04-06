@@ -90,7 +90,7 @@ export const LogEntryModal: React.FC<LogEntryModalProps> = ({ isOpen, onClose, e
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             placeholder="What did you ship today?"
-            className="w-full h-32 bg-ink/50 border border-border/50 rounded-xl p-4 text-chalk placeholder:text-mist/30 focus:outline-none focus:ring-2 focus:ring-amber/50 transition-all resize-none"
+            className="w-full h-32 bg-surface2 border border-border rounded-xl p-4 text-chalk placeholder:text-mist/30 focus:outline-none focus:ring-2 focus:ring-amber/50 focus:border-amber/50 transition-all resize-none shadow-inner"
             required
             autoFocus
           />
@@ -103,7 +103,7 @@ export const LogEntryModal: React.FC<LogEntryModalProps> = ({ isOpen, onClose, e
               type="date"
               value={date}
               onChange={(e) => setDate(e.target.value)}
-              className="bg-ink/50"
+              className="bg-surface2 border-border"
               required
             />
           </div>
@@ -114,7 +114,7 @@ export const LogEntryModal: React.FC<LogEntryModalProps> = ({ isOpen, onClose, e
               type="number"
               value={durationMins || ""}
               onChange={(e) => setDurationMins(parseInt(e.target.value) || 0)}
-              className="bg-ink/50"
+              className="bg-surface2 border-border"
               placeholder="0"
             />
           </div>
@@ -125,11 +125,11 @@ export const LogEntryModal: React.FC<LogEntryModalProps> = ({ isOpen, onClose, e
           <select
             value={projectId}
             onChange={(e) => setProjectId(e.target.value)}
-            className="w-full bg-ink/50 border border-border/50 rounded-xl px-4 py-2.5 text-chalk focus:outline-none focus:ring-2 focus:ring-amber/50 transition-all"
+            className="w-full bg-surface2 border border-border rounded-xl px-4 py-2.5 text-chalk focus:outline-none focus:ring-2 focus:ring-amber/50 focus:border-amber/50 transition-all shadow-inner"
           >
-            <option value="">No Project</option>
+            <option value="" className="bg-ink">No Project</option>
             {projects.map((p) => (
-              <option key={p.id} value={p.id}>
+              <option key={p.id} value={p.id} className="bg-ink">
                 {p.name}
               </option>
             ))}

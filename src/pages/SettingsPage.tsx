@@ -207,7 +207,7 @@ export default function SettingsPage() {
                             <Input 
                                value={fullName}
                                onChange={(e) => setFullName(e.target.value)}
-                               className="h-12 bg-surface2/50 border-border/10 text-chalk focus:border-amber/40"
+                               className="h-12 bg-surface2 border-border text-chalk focus:border-amber/40 shadow-inner"
                                placeholder="e.g. Satoshi Nakamoto"
                             />
                          </div>
@@ -217,7 +217,7 @@ export default function SettingsPage() {
                               <Input 
                                  value={user?.email || ""}
                                  disabled
-                                 className="h-12 bg-black/20 border-border/5 text-mist/40 cursor-not-allowed italic"
+                                 className="h-12 bg-black/40 border-border/10 text-mist/30 cursor-not-allowed italic shadow-inner"
                               />
                               <AtSign className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-mist/20" />
                             </div>
@@ -261,7 +261,7 @@ export default function SettingsPage() {
                                type="password"
                                value={newPassword}
                                onChange={(e) => setNewPassword(e.target.value)}
-                               className="h-12 bg-surface2/50 border-border/10 text-chalk focus:border-amber/40"
+                               className="h-12 bg-surface2 border-border text-chalk focus:border-amber/40 shadow-inner"
                                placeholder="Min. 6 characters"
                             />
                          </div>
@@ -271,7 +271,7 @@ export default function SettingsPage() {
                                type="password"
                                value={confirmPassword}
                                onChange={(e) => setConfirmPassword(e.target.value)}
-                               className="h-12 bg-surface2/50 border-border/10 text-chalk focus:border-amber/40"
+                               className="h-12 bg-surface2 border-border text-chalk focus:border-amber/40 shadow-inner"
                                placeholder="Repeat password"
                             />
                          </div>
@@ -413,7 +413,7 @@ export default function SettingsPage() {
                           setRegion(newReg);
                           updateMetadata('region', newReg);
                         }}
-                        className="w-full h-12 bg-surface2/50 border-border/10 text-chalk rounded-xl px-4 focus:border-amber/40 outline-none"
+                        className="w-full h-12 bg-surface2 border-border text-chalk rounded-xl px-4 focus:border-amber/40 focus:ring-2 focus:ring-amber/20 outline-none transition-all shadow-inner"
                       >
                         {timezones.map((tz: string) => <option key={tz} value={tz} className="bg-ink">{tz}</option>)}
                       </select>
@@ -427,7 +427,7 @@ export default function SettingsPage() {
                           setRegion(newReg);
                           updateMetadata('region', newReg);
                         }}
-                        className="w-full h-12 bg-surface2/50 border-border/10 text-chalk rounded-xl px-4 focus:border-amber/40 outline-none"
+                        className="w-full h-12 bg-surface2 border-border text-chalk rounded-xl px-4 focus:border-amber/40 focus:ring-2 focus:ring-amber/20 outline-none transition-all shadow-inner"
                       >
                         <option value="MMM d, yyyy" className="bg-ink">Oct 24, 2023</option>
                         <option value="dd/MM/yyyy" className="bg-ink">24/10/2023</option>

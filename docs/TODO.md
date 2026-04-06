@@ -231,8 +231,8 @@
 - [ ] API for power users
 - [ ] iOS app (React Native or PWA)
 - [ ] Recurring retainer proposals
-- [ ] AI-assisted proposal writing
-- [ ] AI weekly summary generation
+- [x] AI-assisted proposal writing
+- [x] AI weekly summary generation
 - [ ] Team mode (2–5 person shops)
 
 ---

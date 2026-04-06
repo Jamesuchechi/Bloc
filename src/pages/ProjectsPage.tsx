@@ -249,7 +249,7 @@ function ProjectCard({ project, onEdit, onDelete }: { project: Project, onEdit: 
         <div className="flex items-center justify-between text-mist/40 px-2">
           <div className="flex items-center gap-2">
             <Calendar className="h-3 w-3" />
-            <span className="text-[10px] font-bold">Initiated {format(new Date(project.created_at), 'MM/YY')}</span>
+            <span className="text-[10px] font-bold">Initiated {format(new Date(project.created_at), 'MM/yy')}</span>
           </div>
           <button 
             onClick={onDelete}

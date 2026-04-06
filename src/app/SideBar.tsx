@@ -16,7 +16,8 @@ import {
   BarChart3,
   Search,
   Sparkles,
-  Command
+  Command,
+  User as UserIcon
 } from "lucide-react";
 import { cn } from "../lib/utils";
 import { useAppStore } from "../store/appStore";
@@ -98,6 +99,7 @@ export function SideBar() {
     { id: "analytics", label: "Analytics", icon: BarChart3, path: "/analytics" },
     { id: "integrations", label: "Integrations", icon: Puzzle, path: "/integrations" },
     { id: "chat", label: "Bloc AI", icon: Sparkles, path: "/chat" },
+    { id: "profile", label: "Profile", icon: UserIcon, path: "/profile" },
     { id: "settings", label: "Settings", icon: Settings, path: "/settings" },
   ];
 

@@ -3,6 +3,7 @@ import { Badge } from "../ui/Badge";
 import { Button } from "../ui/Button";
 import { Search, Bell, User as UserIcon, Menu, X } from "lucide-react";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useNotificationStore } from "../../store/notificationStore";
 import { NotificationPanel } from "./NotificationPanel";
 import { QuickThemeToggle } from "./QuickThemeToggle";
@@ -11,6 +12,7 @@ export function TopBar() {
   const { activeModule, user, mobileMenuOpen, toggleMobileMenu } = useAppStore();
   const { unreadCount, fetchNotifications, subscribeToNotifications } = useNotificationStore();
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (user) {
@@ -78,8 +80,12 @@ export function TopBar() {
 
         <div className="h-6 w-px bg-border mx-2" />
 
-        <Button variant="outline" className="h-9 gap-2">
-           <UserIcon className="h-4 w-4 text-amber" />
+        <Button 
+          variant="outline" 
+          className="h-9 gap-2 hover:bg-amber/5 hover:border-amber/30 transition-all group"
+          onClick={() => navigate('/profile')}
+        >
+           <UserIcon className="h-4 w-4 text-amber group-hover:scale-110 transition-transform" />
            <span className="hidden md:inline text-xs font-semibold">{user?.email || "Account"}</span>
         </Button>
       </div>

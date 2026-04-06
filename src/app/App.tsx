@@ -17,6 +17,7 @@ import PublicPortalPage from "../pages/PublicPortalPage";
 import ProposalsPage from "../pages/ProposalsPage";
 import ProposalBuilder from "../pages/ProposalBuilder";
 import PublicProposalPage from "../pages/PublicProposalPage";
+import IntegrationsPage from "../pages/IntegrationsPage";
 import { PlaceholderPage } from "../pages/PlaceholderPage";
 import { Timer, Layers, Settings, FileText, Users, ClipboardList } from "lucide-react";
 import { Toaster } from "react-hot-toast";
@@ -57,10 +58,7 @@ export default function App() {
             <Route path="/focus" element={<FocusPage />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/profile" element={<Profile />} />
-            <Route 
-              path="/modules" 
-              element={<PlaceholderPage title="Modules" description="Manage and enable additional BLOC modules." icon={Layers} />} 
-            />
+            <Route path="/integrations" element={<IntegrationsPage />} />
             <Route path="/log" element={<ShipLogPage />} />
             <Route path="/clients" element={<ClientsPage />} />
             <Route path="/clients/:id" element={<ClientDetail />} />

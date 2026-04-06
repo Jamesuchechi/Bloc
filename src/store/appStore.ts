@@ -21,7 +21,7 @@ interface AppState {
   isAuthLoading: boolean;
   sidebarCollapsed: boolean;
   mobileMenuOpen: boolean;
-  activeModule: "focus" | "dashboard" | "modules" | "settings" | "log";
+  activeModule: "focus" | "dashboard" | "modules" | "settings" | "log" | "clients" | "proposals";
   notifications: Notification[];
 
   setUser: (user: User | null) => void;
